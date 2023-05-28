@@ -66,9 +66,11 @@ export const NoticiaScreen = ({ route }: Props) => {
                 scrollViewRef?.current?.scrollToEnd({ animated: true });
             }}
           >
-            { map(coments, (comment: any, index: number) => (
-              <Comment key={index} comment={ comment } name={ username! } />
-            )) }
+            { coments &&
+              map(coments, (comment: any, index: number) => (
+                <Comment key={index} comment={ comment } name={ username! } />
+              )) 
+            }
           </ScrollView>
 
           <ComentsInput sendComment={ sendComment } />

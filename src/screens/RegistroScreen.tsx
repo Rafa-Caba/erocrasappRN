@@ -109,7 +109,7 @@ export const RegistroScreen = ({ navigation }: Props) => {
                         onChangeText={text => onChange(text, 'instrumento')}
                     />
 
-                    <View style={{ height: 200, justifyContent: 'space-between' }}>
+                    <View style={{ height: 150, justifyContent: 'space-between' }}>
                         <TouchableOpacity 
                             style={ styles.btnLogin } 
                             activeOpacity={ 0.6 }

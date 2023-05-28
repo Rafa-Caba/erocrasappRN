@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 
 import { Noticia } from '../components/noticias/Noticia';
-import { Boton } from '../components/Boton';
 import { AuthContext } from '../context/AuthContext';
 import { getDatabase, onValue, ref } from 'firebase/database';
 
@@ -27,42 +26,89 @@ export const HomeScreen = ({ navigation }: Props ) => {
   const usuario = user?.displayName;
   const db = getDatabase();
   const [noticias, setNoticias] = useState<Noticias[]>([])
+  const [ photoURL, setPhotoURL ] = useState('');
 
   useEffect(() => {
+    // Obteniendo Avisos
     onValue(ref(db, "noticias"), (snapshot) => {
       const data = snapshot.val();
-      setNoticias(data);
+      
+      if ( data !== null ) setNoticias(data);
     });
   }, []);
+
+  useEffect(() => {
+    // Obteniendo Foto de Perfil
+    onValue(ref(db, `images/${ usuario }`), (snapshot) => {
+        const data = snapshot.val();
+        
+        if ( data !== null ) setPhotoURL(data);
+    });
+  }, [])
   
   const aNoticiaForm = () => {
     navigation.navigate('NoticiaFormScreen');
   }
   
   return (
-    <View style={{ ...styles.globalMargin, marginVertical: 5, flex: 1 }}>
+    <View style={{ ...styles.globalMargin, marginVertical: 15, flex: 1 }}>
       <View style={{  
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 25,
+        marginHorizontal: 10,
+        marginTop: 15,
         marginBottom: 10,
       }}>
         <Text style={{ ...styles.title, fontSize: 28 }}>{`¡Hola, ${usuario}!`}</Text>
-        <Boton botonTexto="Agregar Aviso" accion={() => aNoticiaForm() } />
+        <Image
+            source={ photoURL ? { uri: photoURL } : require('../img/EroCras4.jpg') }
+            style={{ ...styles.avatar, width: 55, height: 55 }}
+        />
       </View>
 
-      <Text style={{ 
-        fontSize: 22, 
-        fontWeight: '500', 
-        marginHorizontal: 10, 
-        marginVertical: 2,
+      <View style={{  
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 10,
       }}>
-        Avisos:
-      </Text>
+        <Text style={{ 
+          fontSize: 22, 
+          fontWeight: '500', 
+          marginLeft: 5, 
+          marginVertical: 2,
+        }}>
+          Avisos:
+        </Text>
+        <TouchableOpacity
+          activeOpacity={ 0.7 }
+          style={{ 
+              backgroundColor: '#AC75FF',
+              width: 120,
+              height: 30,
+              borderRadius: 15,
+              justifyContent: 'center',
+              alignItems: 'center' 
+          }}
+          onPress={ () => aNoticiaForm() }
+        >
+          <Text style={{
+              ...styles.title,
+              textAlign: 'center', 
+              fontSize: 14,
+              color: '#fff',
+              top: 3,
+          }}>
+              Agregar Aviso
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <ScrollView>
-        { map(noticias, (noticia, index: number) => (
+        { noticias &&
+          map(noticias, (noticia, index: number) => (
             <Noticia key={index} noticia={ noticia } />
           ))
         }

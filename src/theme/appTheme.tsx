@@ -52,8 +52,8 @@ export const styles = StyleSheet.create({
         fontSize: 20
     },
     perfilImage: {
-        width: 100,
-        height: 100,
+        width: 120,
+        height: 120,
         borderRadius: 100,
         marginTop: 15,
         marginBottom: 30,

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { View, Text, Image, TextInput, Alert } from 'react-native';
+import { View, Text, Image, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, Keyboard } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -15,7 +16,9 @@ import { useForm } from '../../hooks/useForm';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
 
-export const EditarPerfilScreen = () => {
+interface Props extends StackScreenProps<any, any> {}
+
+export const EditarPerfilScreen = ({ navigation }: Props) => {
 
     const db = getDatabase();
     const { user } = useContext( AuthContext );
@@ -44,7 +47,7 @@ export const EditarPerfilScreen = () => {
             const source = { uri, type, name }
 
             // cloudinaryUpload(source, displayName );
-            cloudinaryUpload( source );
+            cloudinaryUpload( source, displayName );
 
         });
     }
@@ -65,11 +68,14 @@ export const EditarPerfilScreen = () => {
         };
 
         if ( auth.currentUser !== null) {
-            onValue(ref(db, `images/${ displayName }`), (snapshot) => {
-                const data = snapshot.val();
-                
-                setPhotoURL(data);
-            });
+
+            if ( displayName ) {
+                onValue(ref(db, `images/${ displayName }`), (snapshot) => {
+                    const data = snapshot.val();
+                    
+                    setPhotoURL(data);
+                });
+            }        
 
             updateProfile(auth.currentUser!, {
                 displayName: nombre, 
@@ -82,10 +88,12 @@ export const EditarPerfilScreen = () => {
                 instrumento,
             });
         }
-        
+        Keyboard.dismiss();
+        navigation.pop();
     }
 
     useEffect(() => {
+        // Obteniendo Instrumento
         onValue(ref(db, `instrumentos/${ displayName }`), (snapshot) => {
             const { instrumento } = snapshot.val();
 
@@ -93,87 +101,136 @@ export const EditarPerfilScreen = () => {
         });
     }, [])
 
+    useEffect(() => {
+        // Obteniendo Foto de Perfil
+        onValue(ref(db, `images/${ displayName }`), (snapshot) => {
+            const data = snapshot.val();
+            
+            setPhotoURL(data);
+        });
+    }, [])
         
     return (
-        <View style={{ 
-            ...styles.globalMargin ,
-            marginHorizontal: 50,
-        }}>
-            <View style={ styles.avatarContainer }>
-                <Image
-                source={ require('../../img/EroCras4.jpg') }
-                style={ styles.perfilImage }
-                />
-            </View>
+        <View style={{ flex: 1}}>
+            <KeyboardAvoidingView
+                behavior={ (Platform.OS) === 'ios' ? 'padding' : 'height' }
+            >
+                <View style={{ 
+                    ...styles.globalMargin ,
+                    marginHorizontal: 50,
+                    marginTop: 20,
+                }}>
+                    <View style={ styles.avatarContainer }>
+                        <Image
+                            source={ photoURL ? { uri: photoURL } : require('../../img/EroCras4.jpg') }
+                            style={{ ...styles.perfilImage, marginBottom: 15 }}
+                        />
+                    </View>
 
-            <View>
-                <Text style={ styles.menuTexto }>Nombre:</Text>
-                <TextInput 
-                    style={{
-                        height: 35,
-                        marginTop: 3,
-                        marginBottom: 10,
-                        borderWidth: 1,
-                        padding: 5,
-                        fontSize: 16
-                    }}
-                    value={ nombre }
-                    onChangeText={text => onChange(text, 'nombre')}
-                    placeholder="Nombre" 
-                    placeholderTextColor={ 'lightgray' } 
-                />
-            </View>
+                    <View>
+                        <Text style={ styles.menuTexto }>Nombre:</Text>
+                        <TextInput 
+                            style={{
+                                height: 35,
+                                marginTop: 2,
+                                marginBottom: 6,
+                                borderWidth: 1,
+                                paddingVertical: 5,
+                                paddingHorizontal: 8,
+                                fontSize: 16,
+                                fontWeight: '500'
+                            }}
+                            value={ nombre }
+                            onChangeText={text => onChange(text, 'nombre')}
+                            placeholder="Nombre" 
+                            placeholderTextColor={ 'lightgray' } 
+                        />
+                    </View>
 
-            <View>
-                <Text style={ styles.menuTexto }>Contraseña:</Text>
-                <TextInput 
-                    style={{
-                        height: 35,
-                        marginTop: 3,
-                        marginBottom: 10,
-                        borderWidth: 1,
-                        padding: 5,
-                        fontSize: 16
-                    }}
-                    value={ contraseña }
-                    onChangeText={text => onChange(text, 'contraseña')}
-                    placeholder="Nueva Contraseña" 
-                    placeholderTextColor={ 'lightgray' } 
-                />
-            </View>
+                    <View>
+                        <Text style={ styles.menuTexto }>Contraseña:</Text>
+                        <TextInput 
+                            style={{
+                                height: 35,
+                                marginTop: 2,
+                                marginBottom: 6,
+                                borderWidth: 1,
+                                paddingVertical: 5,
+                                paddingHorizontal: 8,
+                                fontSize: 16,
+                                fontWeight: '500'
+                            }}
+                            value={ contraseña }
+                            onChangeText={text => onChange(text, 'contraseña')}
+                            placeholder="Nueva Contraseña" 
+                            placeholderTextColor={ 'lightgray' } 
+                        />
+                    </View>
 
-            <View>
-                <Text style={ styles.menuTexto }>Instrumento:</Text>
-                <TextInput 
-                    style={{
-                        height: 35,
-                        marginTop: 3,
-                        marginBottom: 10,
-                        borderWidth: 1,
-                        padding: 5,
-                        fontSize: 16
-                    }}
-                    value={ instrumento }
-                    onChangeText={text => onChange(text, 'instrumento')}
-                    placeholder="Instrumento" 
-                    placeholderTextColor={ 'lightgray' } 
-                />
-            </View>
+                    <View>
+                        <Text style={ styles.menuTexto }>Instrumento:</Text>
+                        <TextInput 
+                            style={{
+                                height: 35,
+                                marginTop: 2,
+                                marginBottom: 6,
+                                borderWidth: 1,
+                                paddingVertical: 5,
+                                paddingHorizontal: 8,
+                                fontSize: 16,
+                                fontWeight: '500'
+                            }}
+                            value={ instrumento }
+                            onChangeText={text => onChange(text, 'instrumento')}
+                            placeholder="Instrumento" 
+                            placeholderTextColor={ 'lightgray' } 
+                        />
+                    </View>
 
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={ styles.menuTexto }>Foto de Perfil:</Text>
-                <Boton 
-                    botonTexto="Agrega foto"
-                    accion={ takePhotoFromGalery }
-                />
-            </View>
+                    <View style={{ 
+                        flexDirection: 'row', 
+                        alignItems: 'baseline',
+                        justifyContent: 'center',
+                        marginVertical: 10,
+                    }}>
+                        <Text style={{
+                            fontSize: 17,
+                            marginRight: 20,
+                        }}>
+                            Foto de Perfil:
+                        </Text>
+                        <TouchableOpacity
+                            activeOpacity={ 0.7 }
+                            style={{ 
+                                backgroundColor: '#AC75FF',
+                                width: 120,
+                                height: 30,
+                                borderRadius: 15,
+                                justifyContent: 'center',
+                                alignItems: 'center' 
+                            }}
+                            onPress={ takePhotoFromGalery }
+                        >
+                            <Text style={{
+                                ...styles.title,
+                                textAlign: 'center', 
+                                fontSize: 14,
+                                color: '#fff',
+                                top: 3,
+                            }}>
+                                Agrega foto
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
-            <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                <Boton 
-                    botonTexto="Guardar Cambios"
-                    accion={ () => submit() }
-                />
-            </View>
+                    <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                        <Boton 
+                            botonTexto="Guardar Cambios"
+                            accion={ () => submit() }
+                        />
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
         </View>
     )
 }

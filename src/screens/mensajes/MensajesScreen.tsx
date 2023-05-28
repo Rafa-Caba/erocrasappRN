@@ -18,7 +18,7 @@ const MensajesScreen = () => {
   const username = user?.displayName;
 
   const db = getDatabase();
-  const [mensajes, setMensajes] = useState([])
+  const [ mensajes, setMensajes ] = useState([])
   const scrollViewRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const MensajesScreen = () => {
             backgroundColor: '#fff',
           }}
           placement="left"
-          centerComponent={{ text: 'Chat', style: { color: '#000', fontSize: 20, fontWeight: 'bold' } }}
+          centerComponent={{ text: 'Chat', style: { color: 'rgba(0,0,0,0.5)', fontSize: 22, fontWeight: 'bold' } }}
         />
 
         <ScrollView 

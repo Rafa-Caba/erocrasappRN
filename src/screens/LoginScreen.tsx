@@ -75,7 +75,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                         secureTextEntry
                         />
 
-                    <View style={{ height: 250, justifyContent: 'space-between' }}>
+                    <View style={{ height: 200, justifyContent: 'space-between' }}>
                         <TouchableOpacity 
                             style={ styles.btnLogin } 
                             activeOpacity={ 0.6 }

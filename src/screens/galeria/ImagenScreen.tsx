@@ -20,7 +20,7 @@ export const ImagenScreen = ({ route, navigation }: Props) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'baseline',
-                marginTop: 10,
+                marginTop: 30,
             }}>
                 <TouchableOpacity
                     activeOpacity={ 0.7 }
