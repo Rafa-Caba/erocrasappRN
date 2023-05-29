@@ -1,15 +1,17 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useWindowDimensions } from 'react-native';
 
-import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
 import { SettingsScreen } from '../screens/ajustesScreens/SettingsScreen';
 import { HomeNavigator } from './HomeNavigator';
+import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
+import { SettingsNavigator } from './SettingsNavigator';
 
 const Drawer = createDrawerNavigator();
 
 export const MenuLateralBasico = () => {
 
     const { width } = useWindowDimensions();
+
     return (
         <Drawer.Navigator 
             screenOptions={{
@@ -17,7 +19,7 @@ export const MenuLateralBasico = () => {
             }}
         >
             <Drawer.Screen 
-                name="StackNavigator"
+                name="HomeNavigator"
                 options={{ title: 'Home' }} 
                 component={ HomeNavigator } 
             />
@@ -29,9 +31,9 @@ export const MenuLateralBasico = () => {
             />
 
             <Drawer.Screen 
-                name="SettingsScreen"
+                name="SettingsNavigator"
                 options={{ title: 'Settings' }} 
-                component={ SettingsScreen } 
+                component={ SettingsNavigator } 
             />
         </Drawer.Navigator>
     );

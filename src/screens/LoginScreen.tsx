@@ -1,6 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+
+import 'firebase/compat/database'
+import { db } from '../utils/firebase';
+import { ref, onValue } from "firebase/database";
 
 import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../hooks/useForm';
@@ -11,6 +15,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const LoginScreen = ({ navigation }: Props) => {
 
     const { signIn, errorMessage, removeError } = useContext(AuthContext);
+    const [ photoURL, setPhotoURL ] = useState('');
 
     const { email, password, onChange } = useForm({
         email: '',
@@ -26,6 +31,15 @@ export const LoginScreen = ({ navigation }: Props) => {
         }]);
     }, [ errorMessage ])
 
+    useEffect(() => {
+        // Obteniendo Foto de Perfil
+        onValue(ref(db, 'images/EroCras4_kmaf0u'), (snapshot) => {
+            const data = snapshot.val();
+            
+            setPhotoURL(data);
+        });
+    }, [])
+    
     const onLogin = () => {
         signIn({ email, password });
         Keyboard.dismiss();
@@ -34,11 +48,17 @@ export const LoginScreen = ({ navigation }: Props) => {
     return (
         <SafeAreaView style={ styles.container }>
             <View>
-                <Image 
-                    source={ require('../img/EroCras4.jpg') } 
-                    resizeMode="contain"
-                    style={ styles.logo } 
-                />
+                {  
+                    photoURL && (
+                        <Image 
+                            source={{ uri: photoURL }} 
+                            resizeMode="contain"
+                            style={ styles.logo } 
+                            borderRadius={ 30 }
+                        />
+                    )
+                }
+                
             </View>
 
             <KeyboardAvoidingView
@@ -48,7 +68,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 <View>
                     <TextInput
                         placeholder='Correo electronico'
-                        value={email}
+                        value={ email }
                         style={{ 
                             color: '#000', 
                             backgroundColor:'#d1b3ff', 
@@ -58,11 +78,12 @@ export const LoginScreen = ({ navigation }: Props) => {
                             width: 250,
                             alignSelf: 'center'
                         }} 
+                        keyboardType="email-address"
                         onChangeText={text => onChange(text, 'email')}
                         />
                     <TextInput
                         placeholder='Contraseña'
-                        value={password}
+                        value={ password }
                         style={{ 
                             color: '#000', 
                             backgroundColor:'#d1b3ff', 
@@ -107,8 +128,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 50,
     },
     logo: {
-        width: 170,
-        height: 170,
+        width: 130,
+        height: 130,
         marginBottom: 50,
       alignSelf: 'center',
     },

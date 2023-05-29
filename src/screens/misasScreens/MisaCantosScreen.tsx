@@ -9,6 +9,7 @@ import 'firebase/compat/database'
 import { StackScreenProps } from '@react-navigation/stack';
 import { Canto } from '../../components/misas/Canto';
 import { map } from 'lodash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Canto {
   tituloCanto: string;
@@ -18,6 +19,8 @@ interface Canto {
 interface Props extends StackScreenProps<any, any> {}
 
 export const MisaCantosScreen = ({ route }: Props) => {
+
+  const insets = useSafeAreaInsets();
   const { nombreMisa } = route.params as any;
   const db = getDatabase();
   const navigation = useNavigation<any>();
@@ -35,7 +38,7 @@ export const MisaCantosScreen = ({ route }: Props) => {
   }
 
   return (
-    <View style={{ ...styles.globalMargin, flex: 1 }}>
+    <View style={{ ...styles.globalMargin, marginTop: insets.top - 10, flex: 1 }}>
       <View style={{  
         flexDirection: 'row',
         justifyContent: 'space-between',

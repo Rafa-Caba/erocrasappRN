@@ -7,6 +7,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 import { styles } from '../../theme/appTheme';
 import { map } from 'lodash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Misas {
   autorMisa: string;
@@ -19,6 +20,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const ListaMisasScreen = ({ navigation }: Props) => {
   const db = getDatabase();
   const [misas, setMisas] = useState<Misas[]>([])
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     onValue(ref(db, `misas`), (snapshot) => {
@@ -32,7 +34,7 @@ export const ListaMisasScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ ...styles.globalMargin, flex: 1, }}>
+    <View style={{ marginHorizontal: 10, marginTop: insets.top - 10, flex: 1, }}>
       <View style={{  
         marginTop: 30, 
         flexDirection: 'row',

@@ -24,7 +24,7 @@ export const useGaleriaPhotos = () => {
         }).then(res => res.json())
         .then(data => {
 
-            const urlFirebase = perfilName ? `images/${ perfilName }` : 'images';
+            const urlFirebase = perfilName ? `images/integrantes/${ perfilName }` : 'images';
 
             set(ref(db, urlFirebase), data.secure_url );
 
@@ -52,23 +52,19 @@ export const useGaleriaPhotos = () => {
         });
     }
 
-    useEffect(() => {
-        setloadingImages(true);
-
-        // Obteniendo todas las imagesnames de la BD
+    const getAllPhotos = () => {
         onValue(ref(db, `images`), (snapshot) => {
-            const data = snapshot.val();
-
-            setImageURLs(data)
+            const data: string[] = snapshot.val();
+            
+            setImageURLs( Object.values(data) );
         });
-
-        setloadingImages(false);
-    }, []);
+    }
 
     return {
         imageURLs,
         takePhotoFromGalery,
         cloudinaryUpload,
         loadingImages,
+        getAllPhotos,
     }
 }

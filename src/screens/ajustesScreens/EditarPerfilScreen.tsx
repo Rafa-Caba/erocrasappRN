@@ -70,17 +70,22 @@ export const EditarPerfilScreen = ({ navigation }: Props) => {
         if ( auth.currentUser !== null) {
 
             if ( displayName ) {
-                onValue(ref(db, `images/${ displayName }`), (snapshot) => {
-                    const data = snapshot.val();
+                onValue(ref(db, `images/integrantes/${ displayName }`), (snapshot) => {
+                    const { photoURL } = snapshot.val();
                     
-                    setPhotoURL(data);
+                    if (photoURL) setPhotoURL(photoURL);
                 });
+
+                update(ref(db, `images/integrantes/${ displayName }`), {
+                    photoURL,
+                });
+
+                updateProfile(auth.currentUser!, {
+                    displayName: nombre, 
+                    photoURL,
+                })
             }        
 
-            updateProfile(auth.currentUser!, {
-                displayName: nombre, 
-                photoURL,
-            })
         }
         
         if ( instrumento !== null ) {
@@ -103,13 +108,13 @@ export const EditarPerfilScreen = ({ navigation }: Props) => {
 
     useEffect(() => {
         // Obteniendo Foto de Perfil
-        onValue(ref(db, `images/${ displayName }`), (snapshot) => {
-            const data = snapshot.val();
+        onValue(ref(db, `images/integrantes/${ displayName }`), (snapshot) => {
+            const { photoURL } = snapshot.val();
             
-            setPhotoURL(data);
+            if (photoURL ) setPhotoURL(photoURL);
         });
     }, [])
-        
+
     return (
         <View style={{ flex: 1}}>
             <KeyboardAvoidingView
@@ -118,13 +123,18 @@ export const EditarPerfilScreen = ({ navigation }: Props) => {
                 <View style={{ 
                     ...styles.globalMargin ,
                     marginHorizontal: 50,
-                    marginTop: 20,
+                    marginTop: 3,
                 }}>
                     <View style={ styles.avatarContainer }>
-                        <Image
-                            source={ photoURL ? { uri: photoURL } : require('../../img/EroCras4.jpg') }
-                            style={{ ...styles.perfilImage, marginBottom: 15 }}
-                        />
+                        {
+                            <Image
+                                source={{ 
+                                    uri: photoURL
+                                        ? photoURL 
+                                        : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+                                style={{ ...styles.perfilImage, marginBottom: 15 }}
+                            />
+                        }
                     </View>
 
                     <View>
@@ -218,12 +228,12 @@ export const EditarPerfilScreen = ({ navigation }: Props) => {
                                 color: '#fff',
                                 top: 3,
                             }}>
-                                Agrega foto
+                                Seleccionar foto
                             </Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ alignSelf: 'center', marginTop: 20 }}>
+                    <View style={{ alignSelf: 'center', marginTop: 10 }}>
                         <Boton 
                             botonTexto="Guardar Cambios"
                             accion={ () => submit() }

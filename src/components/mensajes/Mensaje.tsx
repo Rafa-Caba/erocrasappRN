@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import letterColors from '../../utils/letterColors';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+import 'firebase/compat/database'
+import { getDatabase, ref, onValue } from "firebase/database";
+
+import { styles } from '../../theme/appTheme';
 
 interface Props {
   mensaje: {
@@ -13,48 +17,65 @@ interface Props {
 
 const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
 
+  const db = getDatabase();
   const soyYo = name === username;
-  const [bgColorLetter, setBgColorLetter] = useState(null);
+  const [ otherPhoto, setOtherPhoto ] = useState('');
 
   const condicionalStyle = {
     container: {
       justifyContent: soyYo ? 'flex-end' : 'flex-start',
+      alignItems: 'center',
     },
     viewMensaje: {
       backgroundColor: soyYo ? '#fff' : '#ac75ff',
     },
+    autor: {
+      color: soyYo ? '#000' : '#fff',
+      // textAlign: soyYo ? 'right' : 'left',
+      textAlign: soyYo ? 'right' : 'left',
+    },
     mensaje: {
       color: soyYo ? '#000' : '#fff',
-      textAlign: soyYo ? 'right' : 'left',
+      // textAlign: soyYo ? 'right' : 'left',
+      textAlign: soyYo ? 'left' : 'left',
     },
   }
 
   useEffect(() => {
-    const char = username.trim()[0].toUpperCase();
-    const indexLetter = char.charCodeAt(0) - 65;
-    setBgColorLetter(letterColors[indexLetter] as any);
+    onValue(ref(db, `images/integrantes/${ username }`), (snapshot) => {
+      const { photoURL } = snapshot.val();
+
+      setOtherPhoto(photoURL);
+    });
+    
   }, [])
   
-
   return (
-    <View style={[ styles.container, condicionalStyle.container as any ]}>
+    <View style={[ styles2.container, condicionalStyle.container as any ]}>
       { !soyYo && (
-        <View style={{ ...styles.letterView, backgroundColor: `rgb(${bgColorLetter})` }}>
-          <Text style={ styles.letter }>
-            { username.substring(0, 1) }
-          </Text>
+        <View style={{ ...styles2.letterView }}>
+          {
+            <Image
+              source={{ uri: otherPhoto 
+                ? otherPhoto 
+                : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+              }}
+              style={{ ...styles.perfilImage, marginBottom: 15, width: 35, height: 35 }}
+            />
+          }
         </View>
       )}
-      <View style={[ styles.viewMensaje, condicionalStyle.viewMensaje ]}>
-        <Text style={[ styles.mensaje, condicionalStyle.mensaje as any ]}>{ text }</Text>
-        <Text style={[ styles.time, soyYo ? styles.timeLeft : styles.timeRight ]}>{ time }</Text>
+      <View style={[ styles2.viewMensaje, condicionalStyle.viewMensaje ]}>
+        <Text style={{ ...condicionalStyle.autor as any, paddingHorizontal: 5, paddingTop: 5, fontWeight: '800', fontSize: 13 }}>{ soyYo ? 'Yo mero' : username }</Text>
+        <Text style={[ styles2.mensaje, condicionalStyle.mensaje as any ]}>{ text }</Text>
+        <Text style={[ styles2.time, soyYo ? styles2.timeLeft : styles2.timeRight ]}>{ time }</Text>
       </View>
     </View>
   )
 }
 
 
-const styles = StyleSheet.create({
+const styles2 = StyleSheet.create({
   container: {
     flexDirection: 'row',
     margin: 5,
@@ -64,15 +85,15 @@ const styles = StyleSheet.create({
     height: 35,
     width: 35,
     borderRadius: 100,
-    alignItems: 'center',
+    alignItems: 'baseline',
     justifyContent: 'center',
     marginRight: 10,
-    backgroundColor: '#F00'
   },
-  letter: {
-    fontSize: 18,
-    color: '#fff',
-    textTransform: 'uppercase',
+  imagemUser: {
+    height: 35,
+    width: 35,
+    borderRadius: 100,
+
   },
   viewMensaje: {
     borderRadius: 10,
@@ -81,8 +102,9 @@ const styles = StyleSheet.create({
     maxWidth: '80%'
   },
   mensaje: {
-    padding: 5,
+    paddingHorizontal: 5,
     paddingBottom: 25,
+    fontSize: 15
   },
   time: {
     fontSize: 10,

@@ -13,7 +13,9 @@ interface Props {
   misa: Misa;
 }
 
-export const Misa = ({ misa: { autorMisa, nombreMisa }}: Props) => {
+export const Misa = ({ misa }: Props) => {
+
+  const { autorMisa, nombreMisa } = Object.values(misa)[0]
 
   const navigation = useNavigation<any>();
 

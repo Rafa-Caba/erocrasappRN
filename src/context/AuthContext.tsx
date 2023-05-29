@@ -103,10 +103,10 @@ const AuthProvider = ({ children }: any) => {
 
             if ( auth.currentUser !== null ) {
                 await updateProfile( auth.currentUser, { 
-                    displayName: username,
+                    displayName: username.replace(/ /g, '_'),
                 })
 
-                set(ref(db, `instrumentos/${ username }`), {
+                set(ref(db, `instrumentos/${ username.replace(/ /g, '_') }`), {
                     instrumento,
                 });
     

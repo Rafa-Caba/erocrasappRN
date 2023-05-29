@@ -1,43 +1,66 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, Switch } from 'react-native';
+import { View, Text, Image,  } from 'react-native';
 import { ref, onValue, getDatabase } from 'firebase/database';
 import 'firebase/compat/database'
+
 import { AuthContext } from '../../context/AuthContext';
 import { styles } from '../../theme/appTheme';
 
 export const PerfilScreen = () => {
-  const { user } = useContext(AuthContext);
-  console.log(user?.displayName)
-  const [intrumento, setIntrumento] = useState(null);
+  
   const db = getDatabase();
+  const { user } = useContext( AuthContext );
+  const username = user?.displayName ? user?.displayName : 'Anonimo';
+
+  const [ photoURL, setPhotoURL ] = useState('');
+  const [ instrumento, setInstrumento ] = useState('');
 
   useEffect(() => {
-    onValue(ref(db, `instrumentos/${ user?.displayName }`), (snapshot) => {
-        const data = snapshot.val();
+    // Obteniendo Instrumento
+    onValue(ref(db, `instrumentos/${ username }`), (snapshot) => {
+        const { instrumento } = snapshot.val();
 
-        console.log(data);
+        setInstrumento(instrumento)
     });
-  }, [ user?.displayName ])
+  }, [])
+
+  useEffect(() => {
+    // Obteniendo Foto de Perfil        
+    if ( user?.photoURL ) setPhotoURL(user?.photoURL);
+  }, [])
 
   return (
-    <View style={ styles.globalMargin }>
+    <View style={{ ...styles.globalMargin, marginHorizontal: 20 }}>
       <View style={ styles.avatarContainer }>
-        <Image
-          source={ require('../../img/EroCras4.jpg') }
-          style={ styles.perfilImage }
-        />
+        {  
+          <Image 
+            source={{ 
+              uri: photoURL
+                ? photoURL 
+                : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+            }} 
+            style={{
+              width: 150,
+              height: 150,
+              marginBottom: 50,
+              alignSelf: 'center',
+              borderRadius: 50,
+            }} 
+          />
+        }
       </View>
 
-      <View>
+      <View style={{ marginBottom: 20 }}>
         <Text style={ styles.menuTexto }>Nombre:</Text>
-        <Text style={ styles.title }>Rafael Cabanillas</Text>
+        <Text style={ styles.title }>{ username }</Text>
       </View>
 
       <View>
         <Text style={ styles.menuTexto }>Instrumento:</Text>
-        <Text style={ styles.title }>Guitarra</Text>
+        <Text style={ styles.title }>{ instrumento }</Text>
       </View>
-      
     </View>
   )
 }
+
+

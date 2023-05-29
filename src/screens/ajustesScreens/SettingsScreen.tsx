@@ -26,6 +26,23 @@ export const SettingsScreen = ({ navigation }: Props) => {
                 <TouchableOpacity 
                     style={{ borderRadius: 15, marginVertical: 5, flexDirection: 'row', alignItems: 'center' }}
                     activeOpacity={ 0.4 }
+                    onPress={ () => navigation.navigate( 'PerfilScreen' ) }
+                >
+                    <Icon name="person-sharp" size={35} color="black"  />
+                    <Text style={{ 
+                        ...styles.title,
+                        marginLeft: 10, 
+                        fontSize: 30,
+                        color: '#000',
+                        top: 3
+                    }}>
+                        Perfil
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity 
+                    style={{ borderRadius: 15, marginVertical: 5, flexDirection: 'row', alignItems: 'center' }}
+                    activeOpacity={ 0.4 }
                     onPress={ () => navigation.navigate( 'EditarPerfilScreen' ) }
                 >
                     <Icon name="person-sharp" size={35} color="black"  />

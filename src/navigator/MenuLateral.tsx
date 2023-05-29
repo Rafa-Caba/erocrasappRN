@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
+import { onValue, ref } from 'firebase/database';
 
 import { AuthContext } from '../context/AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,6 +15,7 @@ import { RegistroScreen } from '../screens/RegistroScreen';
 
 import { colores, styles } from '../theme/appTheme';
 import { LoadingScreen } from '../screens/LoadingScreen';
+import { db } from '../utils/firebase';
 
 const Drawer = createDrawerNavigator();
 
@@ -54,19 +56,27 @@ export const MenuLateral = () => {
     );
 }
 
-const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
+const MenuInterno = ( { navigation, state }: DrawerContentComponentProps) => {
+
+    const { user } = useContext(AuthContext);
+    const [ photoURL, setPhotoURL ] = useState('');
+
+    useEffect(() => {
+        // Obteniendo Foto de Perfil
+        if ( user?.photoURL ) setPhotoURL(user?.photoURL);
+    }, [])
 
     return (
         <DrawerContentScrollView>
 
             {/* Parte del Avatar */}
             <View style={{ ...styles.avatarContainer }}>
-                <Image 
-                    source={{
-                        uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-                    }}
-                    style={ styles.avatar }
-                />
+                {
+                    <Image 
+                        source={{ uri: (photoURL) ? photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+                        style={ styles.avatar }
+                    />
+                }
             </View>
 
             {/* Opciones de Menu  */}

@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     },
     avatarContainer: {
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 5,
     },
     avatar: {
         width: 150,

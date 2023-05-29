@@ -1,6 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+
+import 'firebase/compat/database'
+import { db } from '../utils/firebase';
+import { ref, onValue } from "firebase/database";
 
 import { AuthContext } from '../context/AuthContext';
 import { useForm } from '../hooks/useForm';
@@ -10,6 +14,7 @@ interface Props extends StackScreenProps<any, any> {}
 export const RegistroScreen = ({ navigation }: Props) => {
 
     const { signUp, errorMessage, removeError } = useContext(AuthContext);
+    const [ photoURL, setPhotoURL ] = useState('');
 
     const { email, password, username, instrumento, onChange } = useForm({
         email: '',
@@ -32,14 +37,28 @@ export const RegistroScreen = ({ navigation }: Props) => {
         Keyboard.dismiss();
     }
 
+    useEffect(() => {
+        // Obteniendo Foto de Perfil
+        onValue(ref(db, 'images/EroCras4_kmaf0u'), (snapshot) => {
+            const data = snapshot.val();
+            
+            setPhotoURL(data);
+        });
+    }, [])
+
     return (
         <SafeAreaView style={ styles.container }>
             <View>
-                <Image 
-                    source={ require('../img/EroCras4.jpg') } 
-                    resizeMode="contain"
-                    style={ styles.logo } 
-                />
+                {  
+                    photoURL && (
+                        <Image 
+                            source={{ uri: photoURL }} 
+                            resizeMode="contain"
+                            style={ styles.logo } 
+                            borderRadius={ 30 }
+                        />
+                    )
+                }
             </View>
 
             <KeyboardAvoidingView
@@ -75,6 +94,7 @@ export const RegistroScreen = ({ navigation }: Props) => {
                             width: 250,
                             alignSelf: 'center'
                         }} 
+                        keyboardType="email-address"
                         onChangeText={text => onChange(text, 'email')}
                     />
 
@@ -90,6 +110,7 @@ export const RegistroScreen = ({ navigation }: Props) => {
                             width: 250,
                             alignSelf: 'center'
                         }} 
+                        // keyboardType="visible-password"
                         onChangeText={text => onChange(text, 'password')}
                         secureTextEntry
                     />
@@ -161,4 +182,6 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
 });
+
+
 

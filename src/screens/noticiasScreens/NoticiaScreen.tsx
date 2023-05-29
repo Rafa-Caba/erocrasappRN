@@ -50,7 +50,7 @@ export const NoticiaScreen = ({ route }: Props) => {
         <View style={ styles2.noticiaContainer }>
           <ScrollView>
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 5 }}>
-              <Text style={ styles2.time }>{time}</Text>
+              <Text style={ styles2.time }>{ time }</Text>
             </View>
             <Text style={ styles2.autor }>{ autor }</Text>
             <Text style={ styles2.post }>{ post }</Text>
@@ -83,24 +83,25 @@ export const NoticiaScreen = ({ route }: Props) => {
 
 const styles2 = StyleSheet.create({
   noticiaContainer: { 
-    flex: 2, 
+    flex: 1, 
+    minHeight: 35,
     backgroundColor: '#944dff', 
     paddingHorizontal: 10 
   },
   time: {
-    fontSize: 16,
+    fontSize: 13,
     color: '#d1d1d1',
   },
   autor: {
-    fontSize: 23,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontSize: 21,
+    fontWeight: '600',
+    marginBottom: 5,
     color: '#fff',
     textAlign: 'center'
   },
   post: {
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 16,
+    marginBottom: 6,
     color: '#fff',
     textAlign: 'center'
   },
@@ -114,8 +115,8 @@ const styles2 = StyleSheet.create({
     marginVertical: 15,
   },
   commentTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     marginLeft: 10,
     marginVertical: 5
   },

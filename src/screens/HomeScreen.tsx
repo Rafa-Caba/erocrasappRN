@@ -8,6 +8,7 @@ import { getDatabase, onValue, ref } from 'firebase/database';
 
 import { styles } from '../theme/appTheme';
 import { map } from 'lodash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Noticias {
   post: string;
@@ -20,10 +21,11 @@ interface Noticias {
 interface Props extends DrawerScreenProps<any, any> {}
 
 export const HomeScreen = ({ navigation }: Props ) => {
-    
+  
+  const inserts = useSafeAreaInsets();  
   const { user } = useContext(AuthContext);
 
-  const usuario = user?.displayName;
+  const usuario = user?.displayName?.split('_')[0];
   const db = getDatabase();
   const [noticias, setNoticias] = useState<Noticias[]>([])
   const [ photoURL, setPhotoURL ] = useState('');
@@ -39,11 +41,9 @@ export const HomeScreen = ({ navigation }: Props ) => {
 
   useEffect(() => {
     // Obteniendo Foto de Perfil
-    onValue(ref(db, `images/${ usuario }`), (snapshot) => {
-        const data = snapshot.val();
-        
-        if ( data !== null ) setPhotoURL(data);
-    });
+    if ( user?.photoURL ) setPhotoURL(user?.photoURL);
+
+    console.log('Rafael Cabanillas Flores'.replace(/ /g, '_'))
   }, [])
   
   const aNoticiaForm = () => {
@@ -51,20 +51,25 @@ export const HomeScreen = ({ navigation }: Props ) => {
   }
   
   return (
-    <View style={{ ...styles.globalMargin, marginVertical: 15, flex: 1 }}>
+    <View style={{ ...styles.globalMargin, marginTop: inserts.top + 10, flex: 1 }}>
       <View style={{  
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 10,
-        marginTop: 15,
+        marginTop: 5,
         marginBottom: 10,
       }}>
         <Text style={{ ...styles.title, fontSize: 28 }}>{`¡Hola, ${usuario}!`}</Text>
-        <Image
-            source={ photoURL ? { uri: photoURL } : require('../img/EroCras4.jpg') }
-            style={{ ...styles.avatar, width: 55, height: 55 }}
-        />
+        { 
+          <Image
+            source={{ 
+                uri: photoURL
+                    ? photoURL 
+                    : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+            style={{ ...styles.perfilImage, marginBottom: 10, width: 80, height: 80 }}
+          />
+        }
       </View>
 
       <View style={{  
@@ -76,7 +81,7 @@ export const HomeScreen = ({ navigation }: Props ) => {
       }}>
         <Text style={{ 
           fontSize: 22, 
-          fontWeight: '500', 
+          fontWeight: '600', 
           marginLeft: 5, 
           marginVertical: 2,
         }}>

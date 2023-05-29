@@ -6,6 +6,7 @@ import 'firebase/compat/database'
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../theme/appTheme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Alerta {
     error: string;
@@ -14,8 +15,9 @@ interface Alerta {
 
 const MisaForm = () => {
     const navigation = useNavigation<any>();
-    const [nombreMisa, setNombreMisa] = useState('');
-    const [autorMisa, setAutorMisa] = useState('');
+    const [ nombreMisa, setNombreMisa ] = useState('');
+    const [ autorMisa, setAutorMisa ] = useState('');
+    const insets = useSafeAreaInsets();
 
     const showAlert = ({ error, mensaje }: Alerta) => {
         Alert.alert(
@@ -34,17 +36,15 @@ const MisaForm = () => {
         } else {
             firebase
                 .database()
-                .ref("misas")
+                .ref(`misas/${ nombreMisa }`)
                 .push({ autorMisa, nombreMisa, time });   
-            
-            console.log('Misa guardada');
 
             navigation.navigate('ListaMisasScreen');
         }
     }
 
     return (
-        <View>
+        <View style={{ marginTop: insets.top }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                 <TouchableOpacity onPress={ () => navigation.navigate('ListaMisasScreen') }>
                     <Icon name='chevron-back-outline' size={30} />

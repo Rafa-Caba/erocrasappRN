@@ -5,10 +5,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { SettingsScreen } from '../screens/ajustesScreens/SettingsScreen';
 import { EditarPerfilScreen } from '../screens/ajustesScreens/EditarPerfilScreen';
+import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
 
 export type SettingsStackParams = {
     SettingsScreen: undefined;
     EditarPerfilScreen: undefined;
+    PerfilScreen: undefined;
 }
 
 const Stack = createStackNavigator<SettingsStackParams>();
@@ -30,13 +32,19 @@ export const SettingsNavigator = () => {
 
             <Stack.Screen 
                 name="SettingsScreen" 
-                options={ { title: "Home", headerShown: false } } 
+                options={ { title: "Ajustes", headerShown: false } } 
                 component={ SettingsScreen } 
+            />
+
+            <Stack.Screen 
+                name="PerfilScreen" 
+                options={ { title: "Perfil" } } 
+                component={ PerfilScreen } 
             />
             
             <Stack.Screen 
                 name="EditarPerfilScreen" 
-                options={ { title: "Home", headerShown: false } } 
+                options={ { title: "Editar Perfil" } } 
                 component={ EditarPerfilScreen } 
             />
 

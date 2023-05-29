@@ -27,9 +27,13 @@ export const Noticia = ({ noticia: { post, time, autor } }: Props ) => {
       onPress={() => navigation.navigate( 'NoticiaScreen', { time, post, autor } as any )}
       activeOpacity={ 0.6 }
     >
-      <Text style={ styles2.time }>{ time } </Text>
-      <Text style={ styles2.title }>{ autor }: </Text>
-      <Text style={ styles2.texto }>{ post }</Text>
+      { time && autor && post &&
+        <>
+          <Text style={ styles2.time }>{ time } </Text>
+          <Text style={ styles2.title }>{ autor }: </Text>
+          <Text style={ styles2.texto }>{ post }</Text>
+        </>
+      }
     </TouchableOpacity>
   )
 }

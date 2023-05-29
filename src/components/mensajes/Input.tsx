@@ -20,6 +20,8 @@ const Input = ({ sendMensaje }: any ) => {
                     style={ styles.input }
                     placeholder="Mensaje..."
                     placeholderTextColor="rgba(255,255,255,.6)"
+                    autoCapitalize="sentences"
+                    multiline
                     value={ mensaje }
                     onChange={ (e) => setMensaje(e.nativeEvent.text) }
                 />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
 interface Props {
     uri: string;
@@ -7,12 +7,12 @@ interface Props {
 
 export const Foto = ( { uri }: Props ) => {
     return (
-        <View>
+        <View style={ styles.imageContainer }>
             {
                 uri && (
                     <Image
-                        // source={ require(uri) } 
-                        style={{width: 370, height: 300}}  
+                        source={{ uri }} 
+                        style={ styles.image }
                     /> 
 
                 )
@@ -20,3 +20,23 @@ export const Foto = ( { uri }: Props ) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    image: {
+        flex: 1,
+        borderRadius: 18,
+    },
+    imageContainer: {
+        flex: 1,
+        borderRadius: 18,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.24,
+        shadowRadius: 7,
+
+        elevation: 7,
+    }
+});
