@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-
-import { Noticia } from '../components/noticias/Noticia';
-import { AuthContext } from '../context/AuthContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getDatabase, onValue, ref } from 'firebase/database';
+import { AuthContext } from '../context/AuthContext';
+import { Noticia } from '../components/noticias/Noticia';
 
 import { styles } from '../theme/appTheme';
 import { map } from 'lodash';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Noticias {
   post: string;
@@ -22,13 +21,12 @@ interface Props extends DrawerScreenProps<any, any> {}
 
 export const HomeScreen = ({ navigation }: Props ) => {
   
-  const inserts = useSafeAreaInsets();  
-  const { user } = useContext(AuthContext);
-
-  const usuario = user?.displayName?.split('_')[0];
-  const db = getDatabase();
   const [noticias, setNoticias] = useState<Noticias[]>([])
   const [ photoURL, setPhotoURL ] = useState('');
+  const { user } = useContext(AuthContext);
+  const inserts = useSafeAreaInsets();  
+  const db = getDatabase();
+  const usuario = user?.displayName?.split('_')[0];
 
   useEffect(() => {
     // Obteniendo Avisos
@@ -42,8 +40,6 @@ export const HomeScreen = ({ navigation }: Props ) => {
   useEffect(() => {
     // Obteniendo Foto de Perfil
     if ( user?.photoURL ) setPhotoURL(user?.photoURL);
-
-    console.log('Rafael Cabanillas Flores'.replace(/ /g, '_'))
   }, [])
   
   const aNoticiaForm = () => {

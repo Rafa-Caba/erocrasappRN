@@ -1,25 +1,21 @@
 import React, { useEffect, useRef, useContext, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { map } from 'lodash';
-import moment from 'moment';
-import { Header } from '@rneui/base';
-
 import 'firebase/compat/database'
 import firebase from '../../utils/firebase';
 import { getDatabase, ref, onValue} from "firebase/database";
-
 import { AuthContext } from '../../context/AuthContext';
-import Mensaje from '../../components/mensajes/Mensaje';
+import { Mensaje } from '../../components/mensajes/Mensaje';
 import Input from '../../components/mensajes/Input';
+import { map } from 'lodash';
+import { Header } from '@rneui/base';
+import moment from 'moment';
 
 const MensajesScreen = () => {
-  const { user } = useContext(AuthContext);
-
-  const username = user?.displayName;
-
-  const db = getDatabase();
   const [ mensajes, setMensajes ] = useState([])
+  const { user } = useContext(AuthContext);
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const db = getDatabase();
+  const username = user?.displayName;
 
   useEffect(() => {
     // Obteniendo todos los mensajes de la BD

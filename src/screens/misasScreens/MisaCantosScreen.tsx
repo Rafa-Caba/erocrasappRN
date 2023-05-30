@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import 'firebase/compat/database'
+import { getDatabase, ref, onValue} from "firebase/database";
+import Icon from 'react-native-vector-icons/Ionicons';
+
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { getDatabase, ref, onValue} from "firebase/database";
-import 'firebase/compat/database'
-import { StackScreenProps } from '@react-navigation/stack';
 import { Canto } from '../../components/misas/Canto';
 import { map } from 'lodash';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Canto {
   tituloCanto: string;
@@ -20,11 +21,11 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const MisaCantosScreen = ({ route }: Props) => {
 
+  const [cantos, setCantos] = useState<Canto[]>([])
+  const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const { nombreMisa } = route.params as any;
   const db = getDatabase();
-  const navigation = useNavigation<any>();
-  const [cantos, setCantos] = useState<Canto[]>([])
 
   useEffect(() => {
     onValue(ref(db, `cantos/${nombreMisa.replace(/ /g, '_')}`), (snapshot) => {

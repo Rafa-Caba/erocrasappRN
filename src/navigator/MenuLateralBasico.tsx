@@ -1,7 +1,8 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useWindowDimensions } from 'react-native';
+import 'react-native-gesture-handler';
 
-import { SettingsScreen } from '../screens/ajustesScreens/SettingsScreen';
+import { useWindowDimensions } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import { HomeNavigator } from './HomeNavigator';
 import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
 import { SettingsNavigator } from './SettingsNavigator';

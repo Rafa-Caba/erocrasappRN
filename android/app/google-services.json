@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:726485581195:android:28696a7b9339bee1f1838e",
         "android_client_info": {
-          "package_name": "com.erocrasofficial"
+          "package_name": "com.rafaelcabanillas.erocrasapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "726485581195-003tig1mr13vdf1t6t4cgquvs9sradq6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.erocrasofficial",
+            "package_name": "com.rafaelcabanillas.erocrasapp",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },

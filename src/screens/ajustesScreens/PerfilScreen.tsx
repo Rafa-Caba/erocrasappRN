@@ -8,12 +8,11 @@ import { styles } from '../../theme/appTheme';
 
 export const PerfilScreen = () => {
   
-  const db = getDatabase();
-  const { user } = useContext( AuthContext );
-  const username = user?.displayName ? user?.displayName : 'Anonimo';
-
   const [ photoURL, setPhotoURL ] = useState('');
   const [ instrumento, setInstrumento ] = useState('');
+  const { user } = useContext( AuthContext );
+  const db = getDatabase();
+  const username = user?.displayName ? user?.displayName : 'Anonimo';
 
   useEffect(() => {
     // Obteniendo Instrumento

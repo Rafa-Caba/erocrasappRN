@@ -1,17 +1,14 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { View, Text, Image, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, Keyboard } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-
-import { launchImageLibrary } from 'react-native-image-picker';
-
+import { useGaleriaPhotos } from '../../hooks/useGaleriaPhotos';
+import { useForm } from '../../hooks/useForm';
+import { AuthContext } from '../../context/AuthContext';
 import 'firebase/compat/database'
 import { updatePassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { getDatabase, ref, onValue, update } from "firebase/database";
-
-import { AuthContext } from '../../context/AuthContext';
-import { useGaleriaPhotos } from '../../hooks/useGaleriaPhotos';
-import { useForm } from '../../hooks/useForm';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
@@ -20,11 +17,11 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const EditarPerfilScreen = ({ navigation }: Props) => {
 
-    const db = getDatabase();
-    const { user } = useContext( AuthContext );
-    const displayName = (user?.displayName) ? user.displayName : 'Anonimo';
-    const { cloudinaryUpload } = useGaleriaPhotos();
     const [ photoURL, setPhotoURL ] = useState('');
+    const { cloudinaryUpload } = useGaleriaPhotos();
+    const { user } = useContext( AuthContext );
+    const db = getDatabase();
+    const displayName = (user?.displayName) ? user.displayName : 'Anonimo';
 
     const { nombre, contraseña, instrumento, onChange } = useForm({
         nombre: displayName,

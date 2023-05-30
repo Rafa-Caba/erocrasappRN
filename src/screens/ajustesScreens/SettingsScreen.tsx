@@ -3,9 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import Icon from 'react-native-vector-icons/Ionicons';
-
 import { AuthContext } from '../../context/AuthContext';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../theme/appTheme';
 
 interface Props extends StackScreenProps<any, any> {}

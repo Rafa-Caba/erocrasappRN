@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { styles } from '../../theme/appTheme';
 import { useNavigation } from '@react-navigation/native';
 
 interface Noticia {

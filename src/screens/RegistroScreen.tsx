@@ -1,20 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { AuthContext } from '../context/AuthContext';
+import { useForm } from '../hooks/useForm';
 
 import 'firebase/compat/database'
 import { db } from '../utils/firebase';
 import { ref, onValue } from "firebase/database";
 
-import { AuthContext } from '../context/AuthContext';
-import { useForm } from '../hooks/useForm';
-
 interface Props extends StackScreenProps<any, any> {}
 
 export const RegistroScreen = ({ navigation }: Props) => {
 
-    const { signUp, errorMessage, removeError } = useContext(AuthContext);
     const [ photoURL, setPhotoURL ] = useState('');
+    const { signUp, errorMessage, removeError } = useContext(AuthContext);
 
     const { email, password, username, instrumento, onChange } = useForm({
         email: '',

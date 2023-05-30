@@ -13,10 +13,8 @@ interface Alerta {
 }
 
 const NoticiaForm = () => {
-
-    const navigation = useNavigation();
     const { user } = useContext(AuthContext);
-
+    const navigation = useNavigation();
     const { post, onChange } = useForm({
         post: ''
     });

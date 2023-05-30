@@ -4,17 +4,13 @@ import { View,
   ScrollView, ActivityIndicator, 
   TouchableOpacity 
 } from 'react-native';
-
 import { StackScreenProps } from '@react-navigation/stack';
-import { map } from 'lodash';
 import Carousel from 'react-native-snap-carousel';
-
 import { useGaleriaPhotos } from '../../hooks/useGaleriaPhotos';
+import { map } from 'lodash';
 import { Foto } from '../../components/Foto';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
-
-// import Icon from 'react-native-vector-icons/Ionicons';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -28,7 +24,6 @@ export const GaleriaScreen = ({ navigation }: Props) => {
     getAllPhotos();
   }, [])
   
-
   return (
     <View style={{ ...styles.globalMargin, flex: 1 }}>
       <View style={{  

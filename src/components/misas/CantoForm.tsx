@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text } from 'react-native';
-import moment from 'moment';
+import { useNavigation } from '@react-navigation/native';
 import firebase, { auth } from '../../utils/firebase';
 import 'firebase/compat/database'
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../../theme/appTheme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import moment from 'moment';
+import { styles } from '../../theme/appTheme';
 
 interface Alerta {
     error: string;
@@ -13,9 +13,9 @@ interface Alerta {
 }
 
 const CantoForm = ({ nombreMisa }: any ) => {
-    const navigation = useNavigation<any>();
     const [tituloCanto, setTituloCanto] = useState('');
     const [letraCanto, setLetraCanto] = useState('');
+    const navigation = useNavigation<any>();
 
     const showAlert = ({ error, mensaje }: Alerta) => {
         Alert.alert(

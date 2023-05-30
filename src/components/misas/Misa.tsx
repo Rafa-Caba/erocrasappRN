@@ -14,10 +14,10 @@ interface Props {
 }
 
 export const Misa = ({ misa }: Props) => {
-
+  
+  const navigation = useNavigation<any>();
   const { autorMisa, nombreMisa } = Object.values(misa)[0]
 
-  const navigation = useNavigation<any>();
 
   return (
     <TouchableOpacity 

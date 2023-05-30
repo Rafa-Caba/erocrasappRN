@@ -2,28 +2,27 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
-import moment from 'moment';
-import { map } from 'lodash';
-
 import 'firebase/compat/database'
 import firebase from '../../utils/firebase';
 import { getDatabase, ref, onValue} from "firebase/database";
 
-import { HomeStackParams } from '../../navigator/HomeNavigator';
+import moment from 'moment';
+import { map } from 'lodash';
+
 import { AuthContext } from '../../context/AuthContext';
+import { HomeStackParams } from '../../navigator/HomeNavigator';
 import Comment from '../../components/noticias/Comment';
 import ComentsInput from '../../components/noticias/ComentsInput';
 
 interface Props extends StackScreenProps<HomeStackParams, 'NoticiaScreen'>{};
 
 export const NoticiaScreen = ({ route }: Props) => {
-  const { time, post, autor } = route.params;
-  const { user } = useContext(AuthContext);
-  const username = user?.displayName;
-
-  const db = getDatabase();
   const [coments, setComments] = useState([])
+  const { user } = useContext(AuthContext);
   const scrollViewRef = useRef<ScrollView | null>(null);
+  const { time, post, autor } = route.params;
+  const db = getDatabase();
+  const username = user?.displayName;
 
   useEffect(() => {
     if (time === null) return;

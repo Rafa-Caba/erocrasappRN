@@ -1,4 +1,5 @@
-package com.erocrasofficial;
+// package com.erocrasofficial;
+package com.rafaelcabanillas.erocrasapp;
 import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;

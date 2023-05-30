@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, FlatList, ScrollView } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getDatabase, onValue, ref } from 'firebase/database';
+import { map } from 'lodash';
 import { Boton } from '../../components/Boton';
 import { Misa } from '../../components/misas/Misa';
-import { getDatabase, onValue, ref } from 'firebase/database';
-import { StackScreenProps } from '@react-navigation/stack';
-
 import { styles } from '../../theme/appTheme';
-import { map } from 'lodash';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Misas {
   autorMisa: string;
@@ -18,8 +17,8 @@ interface Misas {
 interface Props extends StackScreenProps<any, any> {}
 
 export const ListaMisasScreen = ({ navigation }: Props) => {
-  const db = getDatabase();
   const [misas, setMisas] = useState<Misas[]>([])
+  const db = getDatabase();
   const insets = useSafeAreaInsets();
 
   useEffect(() => {

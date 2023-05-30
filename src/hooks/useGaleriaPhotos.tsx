@@ -1,16 +1,13 @@
-import { useState, useEffect } from 'react';
-
+import { useState } from 'react';
+import { Alert } from 'react-native';
 import 'firebase/compat/database';
 import { getDatabase, ref, onValue, set } from "firebase/database";
-
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Alert } from 'react-native';
 
 export const useGaleriaPhotos = () => {
-    
-    const db = getDatabase();
     const [ imageURLs, setImageURLs ] = useState<string[]>([]);
     const [ loadingImages, setloadingImages ] = useState(false)
+    const db = getDatabase();
 
     const cloudinaryUpload = ( photo: any, perfilName?: string ) => {
         const data = new FormData()

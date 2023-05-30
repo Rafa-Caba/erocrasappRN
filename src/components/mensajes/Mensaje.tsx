@@ -15,11 +15,11 @@ interface Props {
   name: string;
 }
 
-const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
+export const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
 
+  const [ otherPhoto, setOtherPhoto ] = useState('');
   const db = getDatabase();
   const soyYo = name === username;
-  const [ otherPhoto, setOtherPhoto ] = useState('');
 
   const condicionalStyle = {
     container: {
@@ -47,7 +47,6 @@ const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
 
       setOtherPhoto(photoURL);
     });
-    
   }, [])
   
   return (
@@ -120,5 +119,3 @@ const styles2 = StyleSheet.create({
     color: 'grey'
   },
 })
-
-export default Mensaje;

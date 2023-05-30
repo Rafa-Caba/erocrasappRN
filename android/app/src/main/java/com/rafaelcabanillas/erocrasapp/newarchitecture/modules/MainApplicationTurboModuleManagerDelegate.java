@@ -1,4 +1,4 @@
-package com.erocrasofficial.newarchitecture.modules;
+package com.rafaelcabanillas.erocrasapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

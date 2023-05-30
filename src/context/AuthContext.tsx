@@ -94,7 +94,6 @@ const AuthProvider = ({ children }: any) => {
 
     const signUp = async ({ email, password, username, instrumento = 'Voz' }: RegisterData) => {
         try {
-
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
             if ( userCredential === null ) return dispatch({ type: 'notAuthenticated' });

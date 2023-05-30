@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions, SafeAreaView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { GaleriaStackParams } from '../../navigator/GaleriaNavigator';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../theme/appTheme';
 
