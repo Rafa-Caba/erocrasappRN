@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
-import { onValue, ref } from 'firebase/database';
 
 import { AuthContext } from '../context/AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import SplashScreen from 'react-native-splash-screen';
 
 import { Tabs } from './Tabs';
 import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
@@ -15,7 +16,6 @@ import { RegistroScreen } from '../screens/RegistroScreen';
 
 import { colores, styles } from '../theme/appTheme';
 import { LoadingScreen } from '../screens/LoadingScreen';
-import { db } from '../utils/firebase';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +25,10 @@ export const MenuLateral = () => {
     const { status } = useContext(AuthContext);
 
     if ( status === 'checking' ) return <LoadingScreen />
+
+    useEffect(() => {
+        SplashScreen.hide();
+    }, [])
 
     return (
         <Drawer.Navigator 
@@ -56,7 +60,7 @@ export const MenuLateral = () => {
     );
 }
 
-const MenuInterno = ( { navigation, state }: DrawerContentComponentProps) => {
+const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
 
     const { user } = useContext(AuthContext);
     const [ photoURL, setPhotoURL ] = useState('');
