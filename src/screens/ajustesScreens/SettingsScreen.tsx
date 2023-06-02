@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
 import { AuthContext } from '../../context/AuthContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../theme/appTheme';
@@ -23,7 +22,7 @@ export const SettingsScreen = ({ navigation }: Props) => {
                 marginVertical: 30,
             }}>
                 <TouchableOpacity 
-                    style={{ borderRadius: 15, marginVertical: 5, flexDirection: 'row', alignItems: 'center' }}
+                    style={{ borderRadius: 15, marginVertical: 10, flexDirection: 'row', alignItems: 'center' }}
                     activeOpacity={ 0.4 }
                     onPress={ () => navigation.navigate( 'PerfilScreen' ) }
                 >
@@ -40,7 +39,7 @@ export const SettingsScreen = ({ navigation }: Props) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={{ borderRadius: 15, marginVertical: 5, flexDirection: 'row', alignItems: 'center' }}
+                    style={{ borderRadius: 15, marginVertical: 10, flexDirection: 'row', alignItems: 'center' }}
                     activeOpacity={ 0.4 }
                     onPress={ () => navigation.navigate( 'EditarPerfilScreen' ) }
                 >
@@ -57,7 +56,7 @@ export const SettingsScreen = ({ navigation }: Props) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={{ borderRadius: 15, marginVertical: 5, flexDirection: 'row', alignItems: 'center' }}
+                    style={{ borderRadius: 15, marginVertical: 10, flexDirection: 'row', alignItems: 'center' }}
                     activeOpacity={ 0.4 }
                     onPress={ () => logOut() }
                 >

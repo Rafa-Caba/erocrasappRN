@@ -1,22 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { AuthContext } from '../context/AuthContext';
+
 import 'firebase/compat/database'
 import { ref, onValue } from "firebase/database";
 import { db } from '../utils/firebase';
 import { useForm } from '../hooks/useForm';
-import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<any, any> {}
 
 export const LoginScreen = ({ navigation }: Props) => {
 
-    const [ photoURL, setPhotoURL ] = useState('');
     const { signIn, errorMessage, removeError } = useContext(AuthContext);
-
-    const { email, password, onChange } = useForm({
+    const { email, password, onChange, photoURL } = useForm({
         email: '',
         password: '',
+        photoURL: ''
     });
 
     useEffect(() => {
@@ -28,15 +28,17 @@ export const LoginScreen = ({ navigation }: Props) => {
         }]);
     }, [ errorMessage ])
 
+
     useEffect(() => {
-        // Obteniendo Foto de Perfil
-        onValue(ref(db, 'images/EroCras4_kmaf0u'), (snapshot) => {
+        // Obteniendo Foto de EroCras
+        onValue(ref(db, 'images_start/EroCras4_kmaf0u'), (snapshot) => {
             const data = snapshot.val();
             
-            setPhotoURL(data);
+            onChange(data, 'photoURL');
         });
     }, [])
     
+
     const onLogin = () => {
         signIn({ email, password });
         Keyboard.dismiss();
@@ -76,6 +78,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                             alignSelf: 'center'
                         }} 
                         keyboardType="email-address"
+                        autoCapitalize="none"
                         onChangeText={text => onChange(text, 'email')}
                         />
                     <TextInput

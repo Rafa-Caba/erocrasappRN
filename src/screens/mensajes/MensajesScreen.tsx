@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   chatView: {
-    marginVertical: 15,
+    marginVertical: 8,
   },
 })
 

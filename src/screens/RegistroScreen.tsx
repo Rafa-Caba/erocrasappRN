@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
@@ -12,14 +12,13 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const RegistroScreen = ({ navigation }: Props) => {
 
-    const [ photoURL, setPhotoURL ] = useState('');
     const { signUp, errorMessage, removeError } = useContext(AuthContext);
-
-    const { email, password, username, instrumento, onChange } = useForm({
+    const { email, password, username, instrumento, photoURL, onChange } = useForm({
         email: '',
         password: '',
         username: '',
-        instrumento: ''
+        instrumento: '',
+        photoURL: '',
     });
 
     useEffect(() => {
@@ -38,10 +37,10 @@ export const RegistroScreen = ({ navigation }: Props) => {
 
     useEffect(() => {
         // Obteniendo Foto de Perfil
-        onValue(ref(db, 'images/EroCras4_kmaf0u'), (snapshot) => {
+        onValue(ref(db, 'images_start/EroCras4_kmaf0u'), (snapshot) => {
             const data = snapshot.val();
             
-            setPhotoURL(data);
+            onChange(data, 'photoURL');
         });
     }, [])
 
@@ -94,6 +93,7 @@ export const RegistroScreen = ({ navigation }: Props) => {
                             alignSelf: 'center'
                         }} 
                         keyboardType="email-address"
+                        autoCapitalize="none"
                         onChangeText={text => onChange(text, 'email')}
                     />
 

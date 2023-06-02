@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-
 import 'firebase/compat/database'
-import { getDatabase, ref, onValue } from "firebase/database";
-
+import { db } from '../../utils/firebase';
+import { ref, onValue } from "firebase/database";
 import { styles } from '../../theme/appTheme';
 
 interface Props {
@@ -18,7 +17,6 @@ interface Props {
 export const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
 
   const [ otherPhoto, setOtherPhoto ] = useState('');
-  const db = getDatabase();
   const soyYo = name === username;
 
   const condicionalStyle = {
@@ -42,8 +40,8 @@ export const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
   }
 
   useEffect(() => {
-    onValue(ref(db, `images/integrantes/${ username }`), (snapshot) => {
-      const { photoURL } = snapshot.val();
+    onValue(ref(db, `images_integrantes/${ username }`), (snapshot) => {
+      const photoURL = snapshot.val();
 
       setOtherPhoto(photoURL);
     });
@@ -65,7 +63,7 @@ export const Mensaje = ({ mensaje: { username, text, time }, name }: Props) => {
         </View>
       )}
       <View style={[ styles2.viewMensaje, condicionalStyle.viewMensaje ]}>
-        <Text style={{ ...condicionalStyle.autor as any, paddingHorizontal: 5, paddingTop: 5, fontWeight: '800', fontSize: 13 }}>{ soyYo ? 'Yo mero' : username }</Text>
+        <Text style={{ ...condicionalStyle.autor as any, paddingHorizontal: 5, paddingTop: 5, fontWeight: '800', fontSize: 13 }}>{ soyYo ? 'Yo mero' : username.split('_')[0] }</Text>
         <Text style={[ styles2.mensaje, condicionalStyle.mensaje as any ]}>{ text }</Text>
         <Text style={[ styles2.time, soyYo ? styles2.timeLeft : styles2.timeRight ]}>{ time }</Text>
       </View>

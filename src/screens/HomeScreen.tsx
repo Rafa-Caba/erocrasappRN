@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getDatabase, onValue, ref } from 'firebase/database';
 import { AuthContext } from '../context/AuthContext';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { db } from '../utils/firebase';
+import { onValue, ref } from 'firebase/database';
 import { Noticia } from '../components/noticias/Noticia';
-
-import { styles } from '../theme/appTheme';
 import { map } from 'lodash';
+import { styles } from '../theme/appTheme';
 
 interface Noticias {
   post: string;
@@ -16,17 +16,15 @@ interface Noticias {
   autor: string;
 } 
 
-// interface Props extends StackScreenProps<any, any> {}
 interface Props extends DrawerScreenProps<any, any> {}
 
 export const HomeScreen = ({ navigation }: Props ) => {
   
-  const [noticias, setNoticias] = useState<Noticias[]>([])
-  const [ photoURL, setPhotoURL ] = useState('');
   const { user } = useContext(AuthContext);
+  const [noticias, setNoticias] = useState<Noticias[]>([])
   const inserts = useSafeAreaInsets();  
-  const db = getDatabase();
-  const usuario = user?.displayName?.split('_')[0];
+  const usuario = (user?.displayName) ? user?.displayName!.split('_')[0] : '';
+  const photoURL = (user?.photoURL) ? user?.photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
 
   useEffect(() => {
     // Obteniendo Avisos
@@ -37,14 +35,10 @@ export const HomeScreen = ({ navigation }: Props ) => {
     });
   }, []);
 
-  useEffect(() => {
-    // Obteniendo Foto de Perfil
-    if ( user?.photoURL ) setPhotoURL(user?.photoURL);
-  }, [])
-  
   const aNoticiaForm = () => {
     navigation.navigate('NoticiaFormScreen');
   }
+  
   
   return (
     <View style={{ ...styles.globalMargin, marginTop: inserts.top + 10, flex: 1 }}>
@@ -56,7 +50,7 @@ export const HomeScreen = ({ navigation }: Props ) => {
         marginTop: 5,
         marginBottom: 10,
       }}>
-        <Text style={{ ...styles.title, fontSize: 28 }}>{`¡Hola, ${usuario}!`}</Text>
+        <Text style={{ ...styles.title, fontSize: 28 }}>{`Hola, ${ usuario }`}</Text>
         { 
           <Image
             source={{ 

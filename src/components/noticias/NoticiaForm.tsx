@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text } from 'react-native';
 import moment from 'moment';
-import firebase, { auth } from '../../utils/firebase';
+import firebase from '../../utils/firebase';
 import 'firebase/compat/database'
 import { useNavigation } from '@react-navigation/native';
 import { useForm } from '../../hooks/useForm';
@@ -18,7 +18,6 @@ const NoticiaForm = () => {
     const { post, onChange } = useForm({
         post: ''
     });
-
     const autor = user?.displayName;
 
     const showAlert = ({ error, mensaje }: Alerta) => {

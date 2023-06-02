@@ -1,25 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, Image,  } from 'react-native';
-import { ref, onValue, getDatabase } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import 'firebase/compat/database'
-
 import { AuthContext } from '../../context/AuthContext';
+import { db } from '../../utils/firebase';
 import { styles } from '../../theme/appTheme';
 
 export const PerfilScreen = () => {
   
+  const { user } = useContext( AuthContext );
   const [ photoURL, setPhotoURL ] = useState('');
   const [ instrumento, setInstrumento ] = useState('');
-  const { user } = useContext( AuthContext );
-  const db = getDatabase();
   const username = user?.displayName ? user?.displayName : 'Anonimo';
 
   useEffect(() => {
     // Obteniendo Instrumento
     onValue(ref(db, `instrumentos/${ username }`), (snapshot) => {
-        const { instrumento } = snapshot.val();
+      const { instrumento } = snapshot.val();
 
-        setInstrumento(instrumento)
+      setInstrumento(instrumento);
     });
   }, [])
 
@@ -51,7 +50,7 @@ export const PerfilScreen = () => {
 
       <View style={{ marginBottom: 20 }}>
         <Text style={ styles.menuTexto }>Nombre:</Text>
-        <Text style={ styles.title }>{ username }</Text>
+        <Text style={ styles.title }>{ username.split('_').join(' ') }</Text>
       </View>
 
       <View>

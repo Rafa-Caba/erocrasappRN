@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+const widthScreen = Dimensions.get('screen').width;
 
 const Input = ({ sendMensaje }: any ) => {
 
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         backgroundColor: '#ac75ff',
-        paddingBottom: Platform.OS === "ios" ? 20 : 0,
+        paddingBottom: Platform.OS === "ios" ? 10 : 0,
         paddingHorizontal: 5,
         paddingVertical: 5,
     },
@@ -56,13 +58,13 @@ const styles = StyleSheet.create({
     },
     input: {
         color: '#fff',
-        width: 350,
+        width: '88%',// widthScreen - 55,
         backgroundColor: '#9d5cff',
         fontSize: 18, 
         paddingLeft: 10 ,
     },
     iconSend: {
-        width: 100,
+        width: '14%',
         marginHorizontal: 10
     },
 });

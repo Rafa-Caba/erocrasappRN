@@ -1,8 +1,8 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmailAndPassword, 
     createUserWithEmailAndPassword, 
-    updateProfile, signOut 
+    updateProfile, signOut, onAuthStateChanged 
 } from "firebase/auth";
 
 import 'firebase/compat/database'
@@ -12,7 +12,7 @@ import { ref, set } from "firebase/database";
 import { AuthState, authReducer } from './authReducer';
 import { LoginData, RegisterData, Usuario } from '../interfaces/appInterfaces';
 
-interface AuthContextProps {
+type AuthContextProps = {
     errorMessage: string;
     token: string | null;
     user: Usuario | null;
@@ -31,36 +31,42 @@ const authInitialState: AuthState = {
     errorMessage: '',
 }
 
-const AuthContext = createContext({} as AuthContextProps);
+export const AuthContext = createContext({} as AuthContextProps);
 
-const AuthProvider = ({ children }: any) => {
+
+export const AuthProvider = ({ children }: any) => {
 
     const [ state, dispatch ] = useReducer( authReducer, authInitialState );
 
-    useEffect(() => {
-        checkToken();
-    }, []);
-
     // Verificacion si hay token y si es valido
     const checkToken = async () => {
-        // Se obtinen Token de la memoria del telefono
+
         const token = await AsyncStorage.getItem( 'token' );
-        
-        // No token, no autenticado
+
         if ( !token ) return dispatch({ type: 'notAuthenticated' });
 
-        const authToken = await auth.currentUser?.getIdToken(true);
-
-        if ( !authToken ) return dispatch({ type: 'notAuthenticated' });
-
-        // Token se actualiza despues del chequeo.
-        await AsyncStorage.setItem( 'token', authToken );
+        onAuthStateChanged( auth, async (user) => {
+            if (user) {
+                dispatch({
+                    type: 'signUp',
+                    payload: {
+                        token: token,
+                        user
+                    }
+                });
+                
+                // Token se actualiza despues del chequeo.
+                await AsyncStorage.setItem( 'token', token );
+            } else {
+                dispatch({ type: 'notAuthenticated' });
+            }
+        })
         
         // token y usuario se actulizan
         dispatch({
             type: 'signUp',
             payload: {
-                token: authToken,
+                token: token,
                 user: auth.currentUser!
             }
         });
@@ -71,17 +77,15 @@ const AuthProvider = ({ children }: any) => {
             
             const userFB = (await signInWithEmailAndPassword(auth, email, password)).user;
 
-            if ( userFB.displayName === null ) return dispatch({ type: 'notAuthenticated' });
-
             dispatch({
                 type: 'signUp',
                 payload: {
-                    token: userFB.refreshToken,
+                    token: userFB.uid,
                     user: userFB,
                 }
             });
 
-            await AsyncStorage.setItem( 'token', userFB.refreshToken );
+            await AsyncStorage.setItem( 'token', userFB.uid );
 
         } catch (error: any) {
             dispatch({
@@ -93,32 +97,38 @@ const AuthProvider = ({ children }: any) => {
 
 
     const signUp = async ({ email, password, username, instrumento = 'Voz' }: RegisterData) => {
+
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-            if ( userCredential === null ) return dispatch({ type: 'notAuthenticated' });
+            const token = userCredential.user.uid;
 
-            const authToken = await userCredential.user.getIdToken(true);
+            const photoURL = 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
+            // Actualizamos el DisplayName e imagen de perfil del usuario
+            await updateProfile( userCredential.user, { 
+                displayName: username.replace(/ /g, '_'),
+                photoURL,
+            })
 
-            if ( auth.currentUser !== null ) {
-                await updateProfile( auth.currentUser, { 
-                    displayName: username.replace(/ /g, '_'),
-                })
+            // Guardamos el default imagen
+            set(ref(db, `images_integrantes/${ username.replace(/ /g, '_') }`), {
+                photoURL,
+            });
 
-                set(ref(db, `instrumentos/${ username.replace(/ /g, '_') }`), {
-                    instrumento,
-                });
-    
-                dispatch({
-                    type: 'signUp',
-                    payload: {
-                        token: authToken,
-                        user: userCredential.user,
-                    }
-                });
-            }
+            // Guardamos el Instrumento
+            set(ref(db, `instrumentos/${ username.replace(/ /g, '_') }`), {
+                instrumento,
+            });
 
-            await AsyncStorage.setItem( 'token', authToken );
+            dispatch({
+                type: 'signUp',
+                payload: {
+                    token,
+                    user: userCredential.user,
+                }
+            });
+
+            await AsyncStorage.setItem( 'token', token );
 
         } catch (error: any) {
             dispatch({
@@ -131,9 +141,10 @@ const AuthProvider = ({ children }: any) => {
     const logOut = async () => {
         try {
             await signOut(auth);
-
+            
             // Se remove el token de la memoria del telefone
             await AsyncStorage.removeItem( 'token' );
+            
             dispatch({ type: 'logout' });
 
         } catch ( error: any ) {
@@ -148,6 +159,14 @@ const AuthProvider = ({ children }: any) => {
         dispatch({ type: 'removeError' });
     }
 
+    useEffect(() => {
+        // Guardamos el default imagen
+        set(ref(db, `images_start`), {
+            'EroCras4_kmaf0u': 'https://res.cloudinary.com/dr6b4izzt/image/upload/q_60/v1685235739/EroCras4_kmaf0u.jpg'
+        });
+
+        checkToken();
+    }, []);
 
     return (
         <AuthContext.Provider value={{
@@ -160,6 +179,4 @@ const AuthProvider = ({ children }: any) => {
             { children }
         </AuthContext.Provider>
     )
-};
-
-export { AuthContext, AuthProvider };
+}

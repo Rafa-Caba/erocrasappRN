@@ -12,28 +12,28 @@ interface Props {
   noticia: Noticia;
 }
 
-export const Noticia = ({ noticia: { post, time, autor } }: Props ) => {
+export const Noticia = ({ noticia: { post, time, autor } }: Props) => {
 
   const navigation = useNavigation<any>();
 
   return (
-    <TouchableOpacity 
-      style={{ 
-        ...styles2.noticiaContainer,
-        marginBottom: 10,
-        paddingHorizontal: 25
-      }}
-      onPress={() => navigation.navigate( 'NoticiaScreen', { time, post, autor } as any )}
-      activeOpacity={ 0.6 }
-    >
+    <>
       { time && autor && post &&
-        <>
+        <TouchableOpacity 
+          style={{ 
+            ...styles2.noticiaContainer,
+            marginBottom: 10,
+            paddingHorizontal: 25
+          }}
+          onPress={() => navigation.navigate( 'NoticiaScreen', { time, post, autor } as any )}
+          activeOpacity={ 0.6 }
+        >
           <Text style={ styles2.time }>{ time } </Text>
           <Text style={ styles2.title }>{ autor }: </Text>
           <Text style={ styles2.texto }>{ post }</Text>
-        </>
+        </TouchableOpacity>
       }
-    </TouchableOpacity>
+    </>
   )
 }
 

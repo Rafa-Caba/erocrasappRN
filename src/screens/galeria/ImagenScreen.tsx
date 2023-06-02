@@ -42,10 +42,12 @@ export const ImagenScreen = ({ route, navigation }: Props) => {
                 justifyContent: 'center',
                 paddingTop: 50,
             }}>
-                <Image 
-                    source={{ uri: url }}
-                    style={{ width: widthScreen, height: 350 }}
-                />
+                { url &&
+                    <Image 
+                        source={{ uri: url }}
+                        style={{ width: widthScreen, height: 350 }}
+                    />
+                }
             </View>
         </SafeAreaView>
     )

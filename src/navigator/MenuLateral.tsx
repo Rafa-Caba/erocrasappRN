@@ -4,9 +4,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import { createDrawerNavigator, DrawerContentComponentProps, DrawerContentScrollView } from '@react-navigation/drawer';
 
-import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../context/AuthContext';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { Tabs } from './Tabs';
 import { PerfilScreen } from '../screens/ajustesScreens/PerfilScreen';
@@ -22,12 +21,10 @@ const Drawer = createDrawerNavigator();
 
 export const MenuLateral = () => {
 
-    const { width } = useWindowDimensions();
     const { status } = useContext(AuthContext);
+    const { width } = useWindowDimensions();
 
     if ( status === 'checking' ) return <LoadingScreen />
-
-
 
     return (
         <Drawer.Navigator 
@@ -61,13 +58,13 @@ export const MenuLateral = () => {
 
 const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
 
-    // const { user } = useContext(AuthContext);
-    // const [ photoURL, setPhotoURL ] = useState('');
+    const { user } = useContext(AuthContext);
+    const [ photoURL, setPhotoURL ] = useState('');
 
-    // useEffect(() => {
-    //     // Obteniendo Foto de Perfil
-    //     // if ( user?.photoURL ) setPhotoURL(user?.photoURL);
-    // }, [])
+    useEffect(() => {
+        // Obteniendo Foto de Perfil
+        if ( user?.photoURL ) setPhotoURL(user?.photoURL);
+    }, [])
 
     return (
         <DrawerContentScrollView>
@@ -76,8 +73,8 @@ const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
             <View style={{ ...styles.avatarContainer }}>
                 {
                     <Image 
-                        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
-                        // source={{ uri: (photoURL) ? photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+                        // source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+                        source={{ uri: (photoURL) ? photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
                         style={ styles.avatar }
                     />
                 }

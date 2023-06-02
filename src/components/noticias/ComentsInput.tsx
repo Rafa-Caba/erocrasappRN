@@ -21,6 +21,7 @@ const ComentsInput = ({ sendComment }: any ) => {
                     placeholder="Comentar" 
                     placeholderTextColor="rgba(255,255,255,.6)"
                     value={ comment }
+                    multiline
                     onChange={ (e) => setComment(e.nativeEvent.text) }
                 />
 
@@ -54,13 +55,13 @@ const styles = StyleSheet.create({
     },
     input: {
         color: '#fff',
-        width: 350,
+        width: '85%',
         backgroundColor: '#9d5cff',
         fontSize: 18, 
         paddingLeft: 10 ,
     },
     iconSend: {
-        width: 100,
+        width: '15%',
         marginHorizontal: 10
     },
 });

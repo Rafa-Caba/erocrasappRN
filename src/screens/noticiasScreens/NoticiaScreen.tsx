@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import 'firebase/compat/database'
-import firebase from '../../utils/firebase';
+import firebase, { db } from '../../utils/firebase';
 import { getDatabase, ref, onValue} from "firebase/database";
 
 import moment from 'moment';
@@ -17,11 +17,10 @@ import ComentsInput from '../../components/noticias/ComentsInput';
 interface Props extends StackScreenProps<HomeStackParams, 'NoticiaScreen'>{};
 
 export const NoticiaScreen = ({ route }: Props) => {
-  const [coments, setComments] = useState([])
   const { user } = useContext(AuthContext);
+  const [ coments, setComments ] = useState([])
   const scrollViewRef = useRef<ScrollView | null>(null);
   const { time, post, autor } = route.params;
-  const db = getDatabase();
   const username = user?.displayName;
 
   useEffect(() => {
@@ -62,7 +61,7 @@ export const NoticiaScreen = ({ route }: Props) => {
             style={ styles2.commentView }
             ref={scrollViewRef}
             onContentSizeChange={() => {
-                scrollViewRef?.current?.scrollToEnd({ animated: true });
+              scrollViewRef?.current?.scrollToEnd({ animated: true });
             }}
           >
             { coments &&
@@ -73,9 +72,8 @@ export const NoticiaScreen = ({ route }: Props) => {
           </ScrollView>
 
           <ComentsInput sendComment={ sendComment } />
-
         </View>
-        </View>
+      </View>
     </>
   )
 }

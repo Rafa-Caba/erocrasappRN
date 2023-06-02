@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import 'firebase/compat/database';
-import { getDatabase, ref, onValue, set } from "firebase/database";
+import firebase, { db } from '../utils/firebase';
+import { ref, onValue, set } from "firebase/database";
 import { launchImageLibrary } from 'react-native-image-picker';
 
 export const useGaleriaPhotos = () => {
+
     const [ imageURLs, setImageURLs ] = useState<string[]>([]);
-    const [ loadingImages, setloadingImages ] = useState(false)
-    const db = getDatabase();
 
     const cloudinaryUpload = ( photo: any, perfilName?: string ) => {
         const data = new FormData()
@@ -21,9 +21,14 @@ export const useGaleriaPhotos = () => {
         }).then(res => res.json())
         .then(data => {
 
-            const urlFirebase = perfilName ? `images/integrantes/${ perfilName }` : 'images';
+            if (perfilName) {
+                set(ref(db, `images_integrantes/${ perfilName }`), data.secure_url );
+            }
 
-            set(ref(db, urlFirebase), data.secure_url );
+            firebase
+                .database()
+                .ref('images')
+                .push(data.secure_url);
 
         }).catch(err => {
             Alert.alert("An Error Occured While Uploading")
@@ -50,18 +55,21 @@ export const useGaleriaPhotos = () => {
     }
 
     const getAllPhotos = () => {
-        onValue(ref(db, `images`), (snapshot) => {
-            const data: string[] = snapshot.val();
+        onValue(ref(db, 'images'), (snapshot) => {
+            const data = snapshot.val();
             
-            setImageURLs( Object.values(data) );
+            setImageURLs(Object.values(data));
         });
     }
+
+    useEffect(() => {
+        getAllPhotos();
+    }, [])
 
     return {
         imageURLs,
         takePhotoFromGalery,
         cloudinaryUpload,
-        loadingImages,
         getAllPhotos,
     }
 }

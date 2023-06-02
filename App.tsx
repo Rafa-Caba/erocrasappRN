@@ -9,6 +9,14 @@ import { AuthProvider } from './src/context/AuthContext';
 import SplashScreen from 'react-native-splash-screen';
 
 
+const Appstate = ({ children }: any) => {
+  return (
+    <AuthProvider>
+        { children }
+    </AuthProvider>
+  )
+}
+
 const App = () => {
 
   useEffect(() => {
@@ -17,11 +25,11 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <AuthProvider>
+      <Appstate>
           <MenuLateral />
-      </AuthProvider>
+      </Appstate>
     </NavigationContainer>
-  );
+  )
 }
 
 export default App;

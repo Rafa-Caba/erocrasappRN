@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, 
   Text, Image, Dimensions,
-  ScrollView, ActivityIndicator, 
-  TouchableOpacity 
+  ScrollView, TouchableOpacity 
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import Carousel from 'react-native-snap-carousel';
 import { useGaleriaPhotos } from '../../hooks/useGaleriaPhotos';
+import Carousel from 'react-native-snap-carousel';
 import { map } from 'lodash';
+import { LoadingScreen } from '../LoadingScreen';
 import { Foto } from '../../components/Foto';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
@@ -18,11 +18,11 @@ interface Props extends StackScreenProps<any, any> {}
 
 export const GaleriaScreen = ({ navigation }: Props) => {
 
-  const { imageURLs, takePhotoFromGalery, getAllPhotos } = useGaleriaPhotos();
+  const { imageURLs, takePhotoFromGalery } = useGaleriaPhotos();
 
-  useEffect(() => {
-    getAllPhotos();
-  }, [])
+  if ( !imageURLs ) {
+    return <LoadingScreen />
+  }
   
   return (
     <View style={{ ...styles.globalMargin, flex: 1 }}>
@@ -40,8 +40,7 @@ export const GaleriaScreen = ({ navigation }: Props) => {
       </View>
 
       <>
-        { 
-          imageURLs && (
+        { imageURLs && (
             <View style={{ 
               position: 'absolute',
               top: 62,
@@ -55,7 +54,7 @@ export const GaleriaScreen = ({ navigation }: Props) => {
             }}>
               <Carousel 
                 data={ imageURLs }
-                renderItem={ ({ item }) => <Foto uri={ item } /> }
+                renderItem={ ({ item, index }) => <Foto uri={ item } key={ index } /> }
                 sliderWidth={ windowWidth }
                 itemWidth={ 220 }
                 layout={'stack'} 
@@ -67,6 +66,7 @@ export const GaleriaScreen = ({ navigation }: Props) => {
             </View>
           )
         }
+        
         <ScrollView
           showsVerticalScrollIndicator={ false }
         >
@@ -93,16 +93,19 @@ export const GaleriaScreen = ({ navigation }: Props) => {
                     }}
                     onPress={ () => navigation.navigate('ImagenScreen', imageURL ) }
                   >
-                    <Image 
-                      source={{ uri: imageURL }} 
-                      style={{ width: 90, height: 80, margin: 3 }}  
-                    />
+                    { imageURL &&
+                      <Image 
+                        source={{ uri: imageURL }} 
+                        style={{ width: windowWidth / 5, height: 80, marginHorizontal: 4, marginVertical: 3 }}  
+                      />
+                    }
                   </TouchableOpacity>
                 ))
               }
             </View>
           </View>
         </ScrollView>
+
       </>
     </View>
   )

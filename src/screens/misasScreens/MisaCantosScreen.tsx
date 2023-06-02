@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import 'firebase/compat/database'
 import { getDatabase, ref, onValue} from "firebase/database";
@@ -19,10 +18,9 @@ interface Canto {
 
 interface Props extends StackScreenProps<any, any> {}
 
-export const MisaCantosScreen = ({ route }: Props) => {
+export const MisaCantosScreen = ({ route, navigation }: Props) => {
 
   const [cantos, setCantos] = useState<Canto[]>([])
-  const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
   const { nombreMisa } = route.params as any;
   const db = getDatabase();
@@ -44,13 +42,13 @@ export const MisaCantosScreen = ({ route }: Props) => {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginVertical: 30
+        marginVertical: 20
       }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={ () => navigation.navigate('ListaMisasScreen') }>
-            <Icon name='chevron-back-outline' size={30} />
+        <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+          <TouchableOpacity onPress={ () => navigation.pop() }>
+            <Icon name='chevron-back-outline' size={ 35 } />
           </TouchableOpacity>
-          <Text style={{ ...styles.title, fontSize: 28, marginLeft: 5 }}>Misa { nombreMisa }</Text>
+          <Text style={{ ...styles.title, fontSize: 24, marginLeft: 5 }}>Misa { nombreMisa }</Text>
         </View>
         <Boton botonTexto="Agregar Canto" accion={ () => aCantoForm() } />
       </View>
@@ -66,32 +64,3 @@ export const MisaCantosScreen = ({ route }: Props) => {
     </View>
   )
 }
-
-/*
-<TouchableOpacity 
-  style={{ 
-    backgroundColor: '#fff'
-  }}
-  key={ index }
-  activeOpacity={ 0.6 }
-  // onPress={ () => navigation.navigate('CantoScreen', { canto })}
->
-  <Text style={ styles.title }>{ canto.titulo }</Text>
-  <Text>
-    {
-      JSON.stringify( canto, null, 3 )
-    }
-  </Text>
-</TouchableOpacity>
-
- */
-/*<Canto key={index} canto={ canto } />*/
-
-/*
-const guardarCanto = ( comment: string ) => {
-  firebase
-    .database()
-    .ref("noticias/comments")
-    .push({ tituloCanto, letraCanto });
-}
-*/

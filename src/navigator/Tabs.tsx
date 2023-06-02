@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { colores } from '../theme/appTheme';
 import { Platform } from 'react-native';
+import { AuthContext } from '../context/AuthContext';
 
 import MensajesScreen from '../screens/mensajes/MensajesScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,6 +13,7 @@ import { MisaCantosNavigator } from './MisaCantosNavigator';
 import { HomeNavigator } from './HomeNavigator';
 import { GaleriaNavigator } from './GaleriaNavigator';
 import { SettingsNavigator } from './SettingsNavigator';
+import { colores } from '../theme/appTheme';
 
 export const Tabs = () => {
   
@@ -24,6 +25,8 @@ export const Tabs = () => {
 const BottomTabAndroid = createMaterialBottomTabNavigator();
 
 const TabsAndroid = () => {
+  const { contadorMensajes } = useContext(AuthContext);
+
   return (
     <BottomTabAndroid.Navigator
       // sceneAnimationEnabled={ true }
@@ -32,7 +35,8 @@ const TabsAndroid = () => {
         backgroundColor: '#8B4BFF',
         margin: 0,
       }}
-      activeColor='white'
+      activeColor='black'
+      inactiveColor='white'
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: 'blue',
         tabBarStyle: {
@@ -45,7 +49,7 @@ const TabsAndroid = () => {
           let iconName: string = '';
           switch(route.name) {
             case 'HomeNavigator':
-                iconName = focused ? 'home-outline' : 'home'
+                iconName = 'home'
             break;
 
             case 'MensajesScreen':
@@ -69,14 +73,14 @@ const TabsAndroid = () => {
             break;
           }
           
-          return <Icon name={ iconName } size={ 25 } color={ 'white' } />
+          return <Icon name={ iconName } size={ 25 } color={ 'white' }  />
         },
       })}
     >
       <BottomTabAndroid.Screen name="HomeNavigator" options={{ title: 'Home' }} component={ HomeNavigator } />
       <BottomTabAndroid.Screen name="MensajesScreen" options={{ title: 'Chat' }} component={ MensajesScreen } />
-      <BottomTabAndroid.Screen name="MisaCantosNavigator" options={{ title: 'Lista de Misas' }} component={ MisaCantosNavigator } />
-      <BottomTabAndroid.Screen name="GaleriaNavigator" options={{ title: 'Galeria' }} component={ GaleriaNavigator } />
+      <BottomTabAndroid.Screen name="MisaCantosNavigator" options={{ title: 'Misas' }} component={ MisaCantosNavigator } />
+      <BottomTabAndroid.Screen name="GaleriaNavigator" options={{ title: 'Galería' }} component={ GaleriaNavigator } />
       <BottomTabAndroid.Screen name="SettingsNavigator" options={{ title: 'Ajustes' }} component={ SettingsNavigator } />
     </BottomTabAndroid.Navigator>
   );

@@ -33,9 +33,9 @@ export const ListaMisasScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ marginHorizontal: 10, marginTop: insets.top - 10, flex: 1, }}>
+    <View style={{ marginHorizontal: 10, marginTop: insets.top, flex: 1, }}>
       <View style={{  
-        marginTop: 30, 
+        marginTop: 15, 
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'

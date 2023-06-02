@@ -5,7 +5,7 @@ interface Props {
     uri: string;
 }
 
-export const Foto = ( { uri }: Props ) => {
+export const Foto = ({ uri }: Props) => {
     return (
         <View style={ styles.imageContainer }>
             {
