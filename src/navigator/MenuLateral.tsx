@@ -47,7 +47,7 @@ export const MenuLateral = () => {
                     : (
                         <>
                             <Drawer.Screen name="Tabs" component={ Tabs } />
-                            <Drawer.Screen name="PerfilScreen" component={ PerfilScreen } />
+                            <Drawer.Screen name="PerfilScreen" options={{ headerShown: true }} component={ PerfilScreen } />
                             <Drawer.Screen name="SettingsScreen" component={ SettingsScreen } />
                         </>
                     )
@@ -59,12 +59,6 @@ export const MenuLateral = () => {
 const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
 
     const { user } = useContext(AuthContext);
-    const [ photoURL, setPhotoURL ] = useState('');
-
-    useEffect(() => {
-        // Obteniendo Foto de Perfil
-        if ( user?.photoURL ) setPhotoURL(user?.photoURL);
-    }, [])
 
     return (
         <DrawerContentScrollView>
@@ -74,7 +68,7 @@ const MenuInterno = ( { navigation }: DrawerContentComponentProps) => {
                 {
                     <Image 
                         // source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
-                        source={{ uri: (photoURL) ? photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
+                        source={{ uri: (user?.photoURL) ? user?.photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' }}
                         style={ styles.avatar }
                     />
                 }

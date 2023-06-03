@@ -39,7 +39,8 @@ export const MisaCantosNavigator = () => {
             <Stack.Screen name="MisaCantosScreen" options={ { headerShown: false } } component={ MisaCantosScreen } />
             <Stack.Screen name="MisaFormScreen" options={ { headerShown: false } } component={ MisaFormScreen } />
             <Stack.Screen name="CantoScreen" options={ { title: "Canto" } } component={ CantoScreen } />
-            <Stack.Screen name="CantoFormScreen" options={ { headerShown: false } } component={ CantoFormScreen } />
+            <Stack.Screen name="CantoFormScreen" options={{  headerShown: false } } component={ CantoFormScreen } />
+            {/* <Stack.Screen name="CantoFormScreen" options={{ title: "Agregar Canto", headerShown: true } } component={ CantoFormScreen } /> */}
 
         </Stack.Navigator>
     )

@@ -5,13 +5,14 @@ import 'firebase/compat/database'
 import { AuthContext } from '../../context/AuthContext';
 import { db } from '../../utils/firebase';
 import { styles } from '../../theme/appTheme';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const PerfilScreen = () => {
   
   const { user } = useContext( AuthContext );
-  const [ photoURL, setPhotoURL ] = useState('');
   const [ instrumento, setInstrumento ] = useState('');
   const username = user?.displayName ? user?.displayName : 'Anonimo';
+  const photoURL = user?.photoURL ? user?.photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
 
   useEffect(() => {
     // Obteniendo Instrumento
@@ -22,42 +23,40 @@ export const PerfilScreen = () => {
     });
   }, [])
 
-  useEffect(() => {
-    // Obteniendo Foto de Perfil        
-    if ( user?.photoURL ) setPhotoURL(user?.photoURL);
-  }, [])
-
   return (
-    <View style={{ ...styles.globalMargin, marginHorizontal: 20 }}>
-      <View style={ styles.avatarContainer }>
-        {  
-          <Image 
-            source={{ 
-              uri: photoURL
-                ? photoURL 
-                : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
-            }} 
-            style={{
-              width: 150,
-              height: 150,
-              marginBottom: 50,
-              alignSelf: 'center',
-              borderRadius: 50,
-            }} 
-          />
-        }
-      </View>
+    <ScrollView 
+      showsVerticalScrollIndicator={ false } 
+      style={{ ...styles.globalMargin, marginHorizontal: 20 }}
+    >
+      <View style={{ marginBottom: 50 }}>
+        <View style={ styles.avatarContainer }>
+          {  
+            <Image 
+              source={{ 
+                uri: photoURL
+              }} 
+              style={{
+                width: 150,
+                height: 150,
+                marginBottom: 50,
+                alignSelf: 'center',
+                borderRadius: 50,
+              }} 
+            />
+          }
+        </View>
 
-      <View style={{ marginBottom: 20 }}>
-        <Text style={ styles.menuTexto }>Nombre:</Text>
-        <Text style={ styles.title }>{ username.split('_').join(' ') }</Text>
-      </View>
+        <View style={{ marginBottom: 20 }}>
+          <Text style={ styles.menuTexto }>Nombre:</Text>
+          <Text style={ styles.title }>{ username.split('_').join(' ') }</Text>
+        </View>
 
-      <View>
-        <Text style={ styles.menuTexto }>Instrumento:</Text>
-        <Text style={ styles.title }>{ instrumento }</Text>
+        <View>
+          <Text style={ styles.menuTexto }>Instrumento:</Text>
+          <Text style={ styles.title }>{ instrumento }</Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 

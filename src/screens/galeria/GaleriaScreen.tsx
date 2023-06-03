@@ -11,6 +11,7 @@ import { LoadingScreen } from '../LoadingScreen';
 import { Foto } from '../../components/Foto';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -19,18 +20,19 @@ interface Props extends StackScreenProps<any, any> {}
 export const GaleriaScreen = ({ navigation }: Props) => {
 
   const { imageURLs, takePhotoFromGalery } = useGaleriaPhotos();
+  const { top } = useSafeAreaInsets();
 
   if ( !imageURLs ) {
     return <LoadingScreen />
   }
   
   return (
-    <View style={{ ...styles.globalMargin, flex: 1 }}>
+    <View style={{ ...styles.globalMargin, marginTop: top + 10, flex: 1 }}>
       <View style={{  
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 30,
+        paddingBottom: 10,
       }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ ...styles.title, fontSize: 28, marginLeft: 5 }}>Galeria</Text>
@@ -74,7 +76,7 @@ export const GaleriaScreen = ({ navigation }: Props) => {
             justifyContent: 'center', 
             alignItems: 'center', 
             marginVertical: 10,
-            top: 210,
+            top: 230,
           }}>
             <View style={{
               flexDirection: 'row',

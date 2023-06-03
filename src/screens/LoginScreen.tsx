@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Image, TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthContext } from '../context/AuthContext';
 
@@ -45,79 +45,81 @@ export const LoginScreen = ({ navigation }: Props) => {
     }
 
     return (
-        <SafeAreaView style={ styles.container }>
-            <View>
-                {  
-                    photoURL && (
-                        <Image 
-                            source={{ uri: photoURL }} 
-                            resizeMode="contain"
-                            style={ styles.logo } 
-                            borderRadius={ 30 }
-                        />
-                    )
-                }
-                
-            </View>
-
-            <KeyboardAvoidingView
-                style={{ flex: 1,  }}
-                behavior={ (Platform.OS) === 'ios' ? 'padding' : 'height' }
-            >
+        <View style={ styles.container }>
+            <ScrollView showsVerticalScrollIndicator={ false }>
                 <View>
-                    <TextInput
-                        placeholder='Correo electronico'
-                        value={ email }
-                        style={{ 
-                            color: '#000', 
-                            backgroundColor:'#d1b3ff', 
-                            fontSize: 20, 
-                            paddingLeft: 10,
-                            marginBottom: 15,
-                            width: 250,
-                            alignSelf: 'center'
-                        }} 
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        onChangeText={text => onChange(text, 'email')}
-                        />
-                    <TextInput
-                        placeholder='Contraseña'
-                        value={ password }
-                        style={{ 
-                            color: '#000', 
-                            backgroundColor:'#d1b3ff', 
-                            fontSize: 20, 
-                            paddingLeft: 10,
-                            width: 250,
-                            alignSelf: 'center'
-                        }} 
-                        onChangeText={text => onChange(text, 'password')}
-                        secureTextEntry
-                        />
-
-                    <View style={{ height: 200, justifyContent: 'space-between' }}>
-                        <TouchableOpacity 
-                            style={ styles.btnLogin } 
-                            activeOpacity={ 0.6 }
-                            onPress={ onLogin }
-                            >
-                            <Text style={ styles.btnLoginText }>Iniciar Sesión</Text>
-                        </TouchableOpacity>
+                    {  
+                        photoURL && (
+                            <Image 
+                                source={{ uri: photoURL }} 
+                                resizeMode="contain"
+                                style={ styles.logo } 
+                                borderRadius={ 30 }
+                            />
+                        )
+                    }
                     
-                        {/* Crear nueva cuenta */}
-                        <TouchableOpacity
-                            activeOpacity={ 0.7 }
-                            onPress={ () => navigation.navigate('RegistroScreen') }
-                            style={{ ...styles.btnLogin, width: 140, height: 40 }}
-                        >
-                            <Text style={{ ...styles.btnLoginText, fontWeight: '400' }}>Registrarse</Text>
-                        </TouchableOpacity>
-                    </View>
-
                 </View>
-            </KeyboardAvoidingView>
-        </SafeAreaView>
+
+                <KeyboardAvoidingView
+                    style={{ flex: 1,  }}
+                    behavior={ (Platform.OS) === 'ios' ? 'padding' : 'height' }
+                >
+                    <View>
+                        <TextInput
+                            placeholder='Correo electronico'
+                            value={ email }
+                            style={{ 
+                                color: '#000', 
+                                backgroundColor:'#d1b3ff', 
+                                fontSize: 20, 
+                                paddingLeft: 10,
+                                marginBottom: 15,
+                                width: 250,
+                                alignSelf: 'center'
+                            }} 
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            onChangeText={text => onChange(text, 'email')}
+                            />
+                        <TextInput
+                            placeholder='Contraseña'
+                            value={ password }
+                            style={{ 
+                                color: '#000', 
+                                backgroundColor:'#d1b3ff', 
+                                fontSize: 20, 
+                                paddingLeft: 10,
+                                width: 250,
+                                alignSelf: 'center'
+                            }} 
+                            onChangeText={text => onChange(text, 'password')}
+                            secureTextEntry
+                            />
+
+                        <View style={{ height: 200, justifyContent: 'space-between' }}>
+                            <TouchableOpacity 
+                                style={ styles.btnLogin } 
+                                activeOpacity={ 0.6 }
+                                onPress={ onLogin }
+                                >
+                                <Text style={ styles.btnLoginText }>Iniciar Sesión</Text>
+                            </TouchableOpacity>
+                        
+                            {/* Crear nueva cuenta */}
+                            <TouchableOpacity
+                                activeOpacity={ 0.7 }
+                                onPress={ () => navigation.navigate('RegistroScreen') }
+                                style={{ ...styles.btnLogin, width: 140, height: 40 }}
+                            >
+                                <Text style={{ ...styles.btnLoginText, fontWeight: '400' }}>Registrarse</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
     )
 }
 

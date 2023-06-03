@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { AuthContext } from '../context/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -41,14 +41,13 @@ export const HomeScreen = ({ navigation }: Props ) => {
   
   
   return (
-    <View style={{ ...styles.globalMargin, marginTop: inserts.top + 10, flex: 1 }}>
+    <View style={{ ...styles.globalMargin, marginTop: inserts.top, flex: 1 }}>
       <View style={{  
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 10,
         marginTop: 5,
-        marginBottom: 10,
       }}>
         <Text style={{ ...styles.title, fontSize: 28 }}>{`Hola, ${ usuario }`}</Text>
         { 

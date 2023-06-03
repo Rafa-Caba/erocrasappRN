@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text, ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import firebase, { auth } from '../../utils/firebase';
-import 'firebase/compat/database'
-import Icon from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
-import { styles } from '../../theme/appTheme';
+import firebase from '../../utils/firebase';
+import 'firebase/compat/database';
 
 interface Alerta {
     error: string;
@@ -16,6 +14,7 @@ const CantoForm = ({ nombreMisa }: any ) => {
     const [tituloCanto, setTituloCanto] = useState('');
     const [letraCanto, setLetraCanto] = useState('');
     const navigation = useNavigation<any>();
+    const { top } = useSafeAreaInsets();
 
     const showAlert = ({ error, mensaje }: Alerta) => {
         Alert.alert(
@@ -40,14 +39,8 @@ const CantoForm = ({ nombreMisa }: any ) => {
     }
 
     return (
-        <View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                <TouchableOpacity onPress={ () => navigation.navigate('MisaCantosScreen', { nombreMisa }) }>
-                    <Icon name='chevron-back-outline' size={30} />
-                </TouchableOpacity>
-                <Text style={{ ...styles, fontSize: 28, marginLeft: 15 }}>Agregar Canto</Text>
-            </View>
-            <View style={styles2.container}>
+        <ScrollView>
+            <View style={{ ...styles2.container, marginTop: top + 50 }}>
                 <TextInput
                     placeholder='Titulo'
                     value={tituloCanto}
@@ -86,24 +79,21 @@ const CantoForm = ({ nombreMisa }: any ) => {
                     onChangeText={text => setLetraCanto(text)}
                 />
 
-                <View>
-                    <TouchableOpacity
-                        style={ styles2.btnPostear } 
-                        activeOpacity={ 0.6 }
-                        onPress={ onSubmit }
-                    >
-                        <Text style={ styles2.btnLoginText }>Guardar Canto</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    style={ styles2.btnPostear } 
+                    activeOpacity={ 0.6 }
+                    onPress={ onSubmit }
+                >
+                    <Text style={ styles2.btnLoginText }>Guardar Canto</Text>
+                </TouchableOpacity>
             </View>
-        </View>   
+        </ScrollView>   
     )
 }
 
 const styles2 = StyleSheet.create({
     container: {
       flex: 1,
-      top: 50,
       marginHorizontal: 50,
     },
     logo: {

@@ -24,7 +24,7 @@ export const Canto = ({ canto: { tituloCanto, letraCanto }}: Props) => {
       activeOpacity={ 0.6 }
       onPress={ () => navigation.navigate('CantoScreen', { tituloCanto, letraCanto })}
     >
-      <Text style={ styles.title }>{ tituloCanto }</Text>
+      <Text style={{ ...styles.title, marginBottom: 0 }}>{ tituloCanto }</Text>
     </TouchableOpacity>
   )
 }

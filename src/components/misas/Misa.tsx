@@ -26,14 +26,14 @@ export const Misa = ({ misa }: Props) => {
         borderColor: 'black',
         borderWidth: 2,
         justifyContent: 'space-between',
-        height: 100,
+        height: 90,
         marginBottom: 10
       }}
       onPress={ () => navigation.navigate( 'MisaCantosScreen', { nombreMisa } ) }
       activeOpacity={ 0.6 }
     >
-      <Text style={{ ...styles.title, textAlign: 'center', fontWeight: '500' }}>Misa { nombreMisa }</Text>
-      <Text style={{ ...styles.texto, textAlign: 'center' }}>{ autorMisa } </Text>
+      <Text style={{ ...styles.title, marginBottom: 0, textAlign: 'center', fontWeight: '500' }}>Misa { nombreMisa }</Text>
+      <Text style={{ ...styles.texto, textAlign: 'center', fontStyle: 'italic' }}>{ autorMisa } </Text>
     </TouchableOpacity>
   )
 }
