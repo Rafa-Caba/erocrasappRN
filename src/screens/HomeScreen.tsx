@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { AuthContext } from '../context/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -27,12 +27,12 @@ export const HomeScreen = ({ navigation }: Props ) => {
   const photoURL = (user?.photoURL) ? user?.photoURL : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png';
 
   useEffect(() => {
-    // Obteniendo Avisos
-    onValue(ref(db, "noticias"), (snapshot) => {
+    onValue(ref(db, "avisos"), (snapshot) => {
       const data = snapshot.val();
       
       if ( data !== null ) setNoticias(data);
     });
+
   }, []);
 
   const aNoticiaForm = () => {

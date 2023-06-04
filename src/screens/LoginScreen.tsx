@@ -49,14 +49,12 @@ export const LoginScreen = ({ navigation }: Props) => {
             <ScrollView showsVerticalScrollIndicator={ false }>
                 <View>
                     {  
-                        photoURL && (
-                            <Image 
-                                source={{ uri: photoURL }} 
-                                resizeMode="contain"
-                                style={ styles.logo } 
-                                borderRadius={ 30 }
-                            />
-                        )
+                        <Image 
+                            source={ require('../assets/EroCras4.jpg') } 
+                            resizeMode="contain"
+                            style={ styles.logo } 
+                            borderRadius={ 30 }
+                        />
                     }
                     
                 </View>

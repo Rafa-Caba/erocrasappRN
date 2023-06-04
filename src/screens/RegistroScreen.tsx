@@ -17,12 +17,11 @@ interface Props extends StackScreenProps<any, any> {}
 export const RegistroScreen = ({ navigation }: Props) => {
 
     const { signUp, errorMessage, removeError } = useContext(AuthContext);
-    const { email, password, username, instrumento, photoURL, onChange } = useForm({
+    const { email, password, username, instrumento, onChange } = useForm({
         email: '',
         password: '',
         username: '',
         instrumento: '',
-        photoURL: '',
     });
 
     useEffect(() => {
@@ -39,29 +38,18 @@ export const RegistroScreen = ({ navigation }: Props) => {
         Keyboard.dismiss();
     }
 
-    useEffect(() => {
-        // Obteniendo Foto de Perfil
-        onValue(ref(db, 'images_start/EroCras4_kmaf0u'), (snapshot) => {
-            const data = snapshot.val();
-            
-            onChange(data, 'photoURL');
-        });
-    }, [])
-
     return (
         <View style={ styles.container }>
             <ScrollView showsVerticalScrollIndicator={ false }>
                 <View style={{ flex: 1 }}>
                     <View>
                         {  
-                            photoURL && (
-                                <Image 
-                                    source={{ uri: photoURL }} 
-                                    resizeMode="contain"
-                                    style={ styles.logo } 
-                                    borderRadius={ 30 }
-                                />
-                            )
+                            <Image 
+                                source={ require('../assets/EroCras4.jpg') } 
+                                resizeMode="contain"
+                                style={ styles.logo } 
+                                borderRadius={ 30 }
+                            />
                         }
                     </View>
 

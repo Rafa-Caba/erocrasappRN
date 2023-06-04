@@ -25,14 +25,15 @@ export const useGaleriaPhotos = () => {
                 set(ref(db, `images_integrantes/${ perfilName }`), data.secure_url );
             }
 
-            firebase
-                .database()
-                .ref('images')
-                .push(data.secure_url);
+            if (data.secure_url) {
+                firebase
+                    .database()
+                    .ref('images')
+                    .push(data.secure_url);
+            }
 
         }).catch(err => {
-            Alert.alert("An Error Occured While Uploading")
-            console.log(err)
+            return (Alert.alert("An Error Occured While Uploading"))
         })
     }
 

@@ -18,7 +18,7 @@ const Comment = ({ comment: { username, text, time2 }, name }: Props) => {
   return (
     <View style={ styles.container }>
       <View style={ styles.viewComment}>
-        <Text style={ styles.autor }>{ soyYo ? 'Yo' : username }</Text>
+        <Text style={ styles.autor }>{ soyYo ? 'Yo' : username.split('_').join(' ') }</Text>
         <Text style={ styles.mensaje }>- { text }</Text>
         <Text style={ styles.time }>{ time2 }</Text>
       </View>

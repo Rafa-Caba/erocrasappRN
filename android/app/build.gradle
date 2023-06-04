@@ -152,8 +152,8 @@ android {
         applicationId "com.rafaelcabanillas.erocrasapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {
@@ -271,6 +271,8 @@ android {
 }
 
 dependencies {
+
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
 
     implementation project(':react-native-splash-screen')
     

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Text, ScrollView, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import moment from 'moment';
 import firebase from '../../utils/firebase';
 import 'firebase/compat/database'
@@ -33,58 +33,56 @@ const NoticiaForm = () => {
         const time = moment().format("DD MMM YYYY hh:mm a");
       
         if (post === '') {
-            showAlert({ error: 'Error:', mensaje: 'Por favor escriba su noticia' });
+            showAlert({ error: 'Error:', mensaje: 'Por favor escriba su aviso' });
         } else {
             firebase
                 .database()
-                .ref("noticias")
+                .ref("avisos")
                 .push({ autor, post, time, rawTime: moment().format('x') });  
 
             navigation.goBack();
         }
+
+        Keyboard.dismiss();
     }
 
     return (
         <View>
-            <View style={styles.container}>
-                <TextInput
-                    placeholder='Aviso'
-                    value={post}
-                    style={{ 
-                        color: '#000', 
-                        borderColor: '#000',
-                        borderWidth: 1,
-                        fontSize: 20, 
-                        paddingLeft: 10,
-                        marginBottom: 15,
-                        width: 300,
-                        height: 200,
-                        alignSelf: 'center',
-                        textAlignVertical: 'top'
-                    }} 
-                    multiline
-                    onChangeText={text => onChange(text, 'post')}
+            <TextInput
+                placeholder='Aviso'
+                value={post}
+                style={{ 
+                    color: '#000', 
+                    borderColor: '#000',
+                    borderWidth: 1,
+                    fontSize: 20, 
+                    paddingLeft: 10,
+                    marginBottom: 15,
+                    width: 300,
+                    height: 200,
+                    alignSelf: 'center',
+                    textAlignVertical: 'top'
+                }} 
+                multiline
+                onChangeText={text => onChange(text, 'post')}
                 />
-
-                <View>
-                    <TouchableOpacity
-                        style={ styles.btnPostear } 
-                        activeOpacity={ 0.6 }
-                        onPress={ onSubmit }
+            <View>
+                <TouchableOpacity
+                    style={ styles.btnPostear } 
+                    activeOpacity={ 0.6 }
+                    onPress={ onSubmit }
                     >
-                        <Text style={ styles.btnLoginText }>Postear Aviso</Text>
-                    </TouchableOpacity>
-                </View>
+                    <Text style={ styles.btnLoginText }>Postear Aviso</Text>
+                </TouchableOpacity>
             </View>
-        </View>   
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      top: 50,
-      marginHorizontal: 50,
+        flex: 1,
+        marginHorizontal: 50,
     },
     logo: {
       width: 170,
@@ -110,22 +108,3 @@ const styles = StyleSheet.create({
   });
 
 export default NoticiaForm;
-
-/**
-                <TextInput
-                    placeholder='Autor'
-                    value={autor}
-                    style={{ 
-                        color: '#000', 
-                        borderColor: '#000',
-                        borderWidth: 1,
-                        fontSize: 20, 
-                        paddingLeft: 10,
-                        marginBottom: 15,
-                        width: 300,
-                        height: 60,
-                        alignSelf: 'center'
-                    }} 
-                    onChangeText={text => setAutor(text)}
-                />Hola a todos esta es una noticia nueva
- */

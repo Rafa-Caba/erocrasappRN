@@ -160,11 +160,6 @@ export const AuthProvider = ({ children }: any) => {
     }
 
     useEffect(() => {
-        // Guardamos el default imagen
-        set(ref(db, `images_start`), {
-            'EroCras4_kmaf0u': 'https://res.cloudinary.com/dr6b4izzt/image/upload/q_60/v1685235739/EroCras4_kmaf0u.jpg'
-        });
-
         checkToken();
     }, []);
 

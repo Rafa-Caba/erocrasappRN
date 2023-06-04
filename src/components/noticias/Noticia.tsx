@@ -29,7 +29,7 @@ export const Noticia = ({ noticia: { post, time, autor } }: Props) => {
           activeOpacity={ 0.6 }
         >
           <Text style={ styles2.time }>{ time } </Text>
-          <Text style={ styles2.title }>{ autor }: </Text>
+          <Text style={ styles2.title }>{ autor.split('_').join(' ') }</Text>
           <Text style={ styles2.texto }>{ post }</Text>
         </TouchableOpacity>
       }

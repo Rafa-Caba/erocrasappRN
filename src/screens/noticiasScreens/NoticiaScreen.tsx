@@ -26,7 +26,7 @@ export const NoticiaScreen = ({ route }: Props) => {
   useEffect(() => {
     if (time === null) return;
     // Obteniendo todos los comments de la BD
-    onValue(ref(db, `noticias/comments/${time.replace(/ /g, '_')}`), (snapshot) => {
+    onValue(ref(db, `avisos/comments/${time.replace(/ /g, '_')}`), (snapshot) => {
       const data = snapshot.val();
       setComments(data);
     });
@@ -38,7 +38,7 @@ export const NoticiaScreen = ({ route }: Props) => {
 
     firebase
       .database()
-      .ref(`noticias/comments/${time.replace(/ /g, '_')}`)
+      .ref(`avisos/comments/${time.replace(/ /g, '_')}`)
       .push({ username, text: comment, time2 });
   }
 
@@ -50,7 +50,7 @@ export const NoticiaScreen = ({ route }: Props) => {
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 5 }}>
               <Text style={ styles2.time }>{ time }</Text>
             </View>
-            <Text style={ styles2.autor }>{ autor }</Text>
+            <Text style={ styles2.autor }>{ autor.split('_').join(' ') }</Text>
             <Text style={ styles2.post }>{ post }</Text>
           </ScrollView>
         </View>

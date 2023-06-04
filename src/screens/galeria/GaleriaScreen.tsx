@@ -12,6 +12,7 @@ import { Foto } from '../../components/Foto';
 import { Boton } from '../../components/Boton';
 import { styles } from '../../theme/appTheme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ActivityIndicator } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -23,7 +24,7 @@ export const GaleriaScreen = ({ navigation }: Props) => {
   const { top } = useSafeAreaInsets();
 
   if ( !imageURLs ) {
-    return <LoadingScreen />
+    return <ActivityIndicator style={{ marginTop: 300 }} size={ 50 } color="purple" />
   }
   
   return (
